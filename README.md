@@ -1,24 +1,28 @@
+# Auto Niche Miner Pro — Phase 8 (Live + Stable Sources)
 
-# Auto Niche Miner Pro — Phase 7 (Full, Fixed)
+This phase enables **live keyword drilldown** using stable, no-signup sources:
+- **Google Autocomplete** (search)
+- **YouTube Autocomplete**
+- **(Best-effort) Google People Also Ask** — often blocked by CORS in browsers, handled gracefully
+- **Preloaded niches** (fallback while Trends is gated by CORS)
 
-## What's New
-- Supabase client now has **fallback values** if Cloudflare env vars aren't set.
-- Update `supabase-client.js` with your real project URL + anon key if Cloudflare vars don't inject correctly.
+> Open your browser **Console** to see detailed DEBUG logs for each source.
 
-## Setup
-1. Add Cloudflare Pages environment variables:
-   - SUPABASE_URL = https://YOUR-PROJECT.supabase.co
-   - SUPABASE_ANON_KEY = YOUR-ANON-KEY
+## Files
+- `index.html` — tabs: Empire (basic), Affiliate Hub (tooltip: Coming Soon), Niches (live)
+- `fetch-keywords.js` — scrapers for Google/YouTube autocomplete, PAA best-effort
+- `supabase-client.js` — Supabase client with env var fallbacks and `saveKeywords()`
 
-2. Or edit `supabase-client.js` to hardcode them.
+## Environment Variables (Cloudflare Pages)
+```
+SUPABASE_URL = https://YOUR-PROJECT.supabase.co
+SUPABASE_ANON_KEY = YOUR-ANON-KEY
+```
+> Or hardcode inside `supabase-client.js` fallbacks.
 
-3. Ensure your Supabase DB has these tables:
-   - sites
-   - settings
-   - affiliate_links
-   - keywords
+## Supabase
+Ensure the `keywords` table exists. Saved rows include: niche, keyword, source, intent, volume, competition.
 
-## After Deploy
-- Empire tab: shows sites from Supabase
-- Affiliate Hub: saves affiliate links
-- Niches: shows mock niches + saves selected keywords
+## Notes
+- **PAA** parsing is disabled due to CORS limitations in browsers; it's wired as best-effort with clear console logs.
+- In **Phase 8.1**, we can add Amazon/Walmart/Etsy/Pinterest autocomplete and a Cloudflare Worker proxy to safely bypass CORS for PAA/Trends.
