@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auto Niche Miner Pro — Phase 7 (Niches)</title>
+<title>Auto Niche Miner Pro — Phase 7.1 (Mock Only)</title>
 <style>
   body{margin:0;background:#0e1117;color:#e8eef7;font-family:system-ui,-apple-system,Segoe UI,Roboto}
   header{background:#0b1018;padding:12px;border-bottom:1px solid #22344d}
@@ -26,10 +26,8 @@
 </head>
 <body>
 <header>
-  <h1>🧭 Auto Niche Miner Pro — Phase 7</h1>
+  <h1>🧭 Auto Niche Miner Pro — Phase 7.1 (Mock)</h1>
   <nav>
-    <a href="#" id="navEmpire">Empire</a>
-    <a href="#" id="navHub">Affiliate Hub</a>
     <a href="#" id="navNiches" class="active">Niches</a>
   </nav>
 </header>
@@ -57,9 +55,7 @@
 
 <div class="toast" id="toast"></div>
 
-<script type="module">
-  import { saveKeywords } from './supabase-client.js';
-
+<script>
   const MOCK_NICHES = ["Drones","Solar Panels","Home Fitness","Smart Home","Outdoor Gear"];
   const MOCK_KEYWORDS = {
     "Drones":[
@@ -86,7 +82,7 @@
     nicheTableBody.innerHTML="";
     MOCK_NICHES.forEach(n=>{
       const tr=document.createElement("tr");
-      tr.innerHTML=\`<td>\${n}</td><td><button class="btn btn-primary">Drill Keywords</button></td>\`;
+      tr.innerHTML=`<td>${n}</td><td><button class="btn btn-primary">Drill Keywords</button></td>`;
       tr.querySelector("button").onclick=()=> showKeywords(n);
       nicheTableBody.appendChild(tr);
     });
@@ -94,19 +90,19 @@
 
   function showKeywords(niche){
     currentNiche=niche;
-    document.getElementById("kwTitle").textContent=\`Keywords for \${niche}\`;
+    document.getElementById("kwTitle").textContent=`Keywords for ${niche}`;
     kwSection.style.display="block";
     kwTableBody.innerHTML="";
     const kws=MOCK_KEYWORDS[niche]||[{keyword:"generic keyword",volume:1000,competition:"Low"}];
     kws.forEach(k=>{
       const tr=document.createElement("tr");
-      tr.innerHTML=\`<td><input type="checkbox"/></td><td>\${k.keyword}</td><td>\${k.volume}</td><td>\${k.competition}</td>\`;
+      tr.innerHTML=`<td><input type="checkbox"/></td><td>${k.keyword}</td><td>${k.volume}</td><td>${k.competition}</td>`;
       tr.dataset.keyword=JSON.stringify(k);
       kwTableBody.appendChild(tr);
     });
   }
 
-  document.getElementById("saveKeywordsBtn").onclick=async()=>{
+  document.getElementById("saveKeywordsBtn").onclick=()=>{
     const selected=[];
     kwTableBody.querySelectorAll("tr").forEach(tr=>{
       if(tr.querySelector("input").checked){
@@ -114,8 +110,7 @@
       }
     });
     if(selected.length===0){toast("No keywords selected");return;}
-    const saved=await saveKeywords(currentNiche,selected);
-    if(saved){toast("✅ "+selected.length+" keywords saved for "+currentNiche);}
+    toast(`✅ ${selected.length} keywords saved for ${currentNiche} (mock)`);
   };
 
   function toast(msg){
