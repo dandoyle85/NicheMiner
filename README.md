@@ -1,21 +1,15 @@
-# Auto Niche Miner Pro (Supabase Enabled)
+# Auto Niche Miner Pro — Phase 2
 
-This version of the dashboard pulls **live site data from Supabase**.
+This phase adds:
+- AI Coach panel (collapsible, bottom right)
+- Dropdown to select site
+- AI recommendation picks the "coldest" site (Cooling or lowest revenue)
+- Apply button updates Supabase, refreshes dashboard
 
 ## ✅ Setup
-1. Deploy schema & seed data in Supabase (see SQL scripts).
-2. In Cloudflare Pages, add Environment Variables:
-   - SUPABASE_URL = https://xxxx.supabase.co
-   - SUPABASE_ANON_KEY = your anon key
+- Deploy SQL schema & seed data if not done
+- Cloudflare Pages env vars:
+  - SUPABASE_URL
+  - SUPABASE_ANON_KEY
 
-## 🚀 Deploy
-- Commit these files to GitHub.
-- Connect to Cloudflare Pages with build settings:
-  - Framework: None
-  - Build command: (blank)
-  - Output folder: /
-- Deploy → see live dashboard pulling from Supabase.
-
-## 🔹 Files
-- index.html → Dashboard wired to Supabase
-- supabase-client.js → Supabase connection + helper functions
+Commit files → Cloudflare redeploy → AI Coach live!

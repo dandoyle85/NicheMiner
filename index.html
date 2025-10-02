@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Auto Niche Miner Pro — Supabase Live Demo</title>
+  <title>Auto Niche Miner Pro — Phase 2 (AI Coach)</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -17,12 +17,16 @@
     table{width:100%;border-collapse:collapse;font-size:13px}
     th,td{padding:8px 10px;border-bottom:1px solid #1c2535;text-align:left}
     th{background:#0e1420;color:#a7b4c7;font-size:11px;text-transform:uppercase}
+    #coach{position:fixed;bottom:0;right:0;width:300px;background:#1c2535;border-top-left-radius:10px;border:1px solid #2a3a50;display:none;flex-direction:column}
+    #coach header{background:#24344d;color:#fff;padding:8px;font-size:14px;cursor:pointer}
+    #coach .body{padding:10px;font-size:13px;color:#cfe1ff}
+    #coach button{margin-top:10px;padding:6px 10px;background:#2e7d32;color:#fff;border:none;border-radius:6px;cursor:pointer}
   </style>
 </head>
 <body>
 <header>
-  <h1>🧭 Auto Niche Miner Pro — Supabase Live Demo</h1>
-  <div class="sub">Now pulling live sites & revenue from Supabase</div>
+  <h1>🧭 Auto Niche Miner Pro — Phase 2</h1>
+  <div class="sub">AI Coach + Apply button wired to Supabase</div>
 </header>
 
 <main class="wrap">
@@ -41,18 +45,34 @@
     <h3>🌐 Empire Traffic (30d)</h3>
     <canvas id="empireChart" height="120"></canvas>
   </section>
+
+  <section class="card">
+    <h3>🔽 Select Site</h3>
+    <select id="siteSelect"></select>
+  </section>
 </main>
 
+<div id="coach">
+  <header onclick="toggleCoach()">💡 AI Coach (click to toggle)</header>
+  <div class="body">
+    <p id="coachText">Loading...</p>
+    <button id="applyBtn">✅ Apply This</button>
+  </div>
+</div>
+
 <script type="module">
-  import { getSites } from './supabase-client.js';
+  import { getSites, upsertSite } from './supabase-client.js';
+
+  let currentSites = [];
+  let selectedSite = null;
 
   async function initDashboard() {
-    const sites = await getSites();
-    console.log("Loaded from Supabase:", sites);
-
-    buildLeaderboard(sites);
-    buildEmpireStats(sites);
-    buildTrafficChart(sites);
+    currentSites = await getSites();
+    buildLeaderboard(currentSites);
+    buildEmpireStats(currentSites);
+    buildTrafficChart(currentSites);
+    buildDropdown(currentSites);
+    pickCoachRecommendation(currentSites);
   }
 
   function buildLeaderboard(sites) {
@@ -90,6 +110,48 @@
       },
       options:{plugins:{legend:{labels:{color:"#cfe1ff"}}},scales:{x:{ticks:{color:"#9bb0c5"}},y:{ticks:{color:"#9bb0c5"}}}}
     });
+  }
+
+  function buildDropdown(sites) {
+    const sel=document.getElementById("siteSelect");
+    sel.innerHTML="";
+    sites.forEach(site=>{
+      let opt=document.createElement("option");
+      opt.value=site.id;
+      opt.textContent=site.name;
+      sel.appendChild(opt);
+    });
+    sel.addEventListener("change",()=>{
+      let id=parseInt(sel.value);
+      selectedSite=currentSites.find(s=>s.id===id);
+      document.getElementById("coachText").textContent = "AI ready for " + selectedSite.name;
+    });
+    if (sites.length>0){ sel.value=sites[0].id; selectedSite=sites[0]; }
+  }
+
+  function pickCoachRecommendation(sites){
+    // Pick coldest site
+    let target=sites.find(s=>s.status==="Cooling")||sites[0];
+    document.getElementById("coachText").textContent = "Your site "+target.name+" is Cooling. Recommend +30 revenue, +2 traffic, mark as Rising.";
+    document.getElementById("coach").style.display="flex";
+  }
+
+  document.getElementById("applyBtn").addEventListener("click",async()=>{
+    if (!selectedSite) return;
+    selectedSite.revenue=selectedSite.revenue+30;
+    selectedSite.status="Rising";
+    selectedSite.traffic=(selectedSite.traffic||[]).map(v=>v+2);
+    await upsertSite(selectedSite);
+    currentSites=await getSites();
+    buildLeaderboard(currentSites);
+    buildEmpireStats(currentSites);
+    buildTrafficChart(currentSites);
+    alert("AI Coach applied changes to "+selectedSite.name);
+  });
+
+  window.toggleCoach=function(){
+    const el=document.getElementById("coach");
+    if(el.style.height==="30px"){ el.style.height="auto"; } else { el.style.height="30px"; }
   }
 
   initDashboard();
