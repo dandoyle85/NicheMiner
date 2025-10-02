@@ -1,15 +1,11 @@
-# Auto Niche Miner Pro — Phase 8.1 Clean Bundle
+# Auto Niche Miner Pro — Phase 8.1.1 Full Bundle
 
-## What’s Included
-- index.html — Clean UI with Empire, Affiliate Hub (Coming Soon), Niches
-- fetch-keywords.js — Fetches live keywords via /api proxy endpoints
-- supabase-client.js — Supabase integration
-- functions/api/autocomplete.js — Proxy for Google/YouTube/Amazon/Walmart/Etsy/Pinterest
-- functions/api/paa.js — Proxy for People Also Ask
-- functions/api/trends.js — Proxy for related trends
+Includes:
+- index.html + style.css
+- fetch-keywords.js + supabase-client.js
+- functions/api/autocomplete.js, paa.js, trends.js
 
-## Deploy
-1. Drop this repo into GitHub.
-2. Set SUPABASE_URL and SUPABASE_ANON_KEY in your Cloudflare environment.
-3. Cloudflare Pages will detect `functions/` and expose `/api/*` endpoints.
-4. Redeploy and test.
+## Setup
+1. Replace Supabase URL + Key in supabase-client.js.
+2. Push repo to GitHub → Cloudflare Pages redeploys.
+3. Cloudflare auto exposes /api/* endpoints.

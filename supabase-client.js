@@ -1,8 +1,9 @@
-// supabase-client.js
+// supabase-client.js — Phase 8.1.1 Full Bundle
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-const SUPABASE_URL = window.SUPABASE_URL || "https://YOURPROJECT.supabase.co";
-const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || "YOUR-ANON-KEY";
+// 🔧 Replace these placeholders with your actual Supabase project URL and anon key
+const SUPABASE_URL = "https://YOURPROJECT.supabase.co";
+const SUPABASE_ANON_KEY = "YOUR-ANON-KEY";
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 

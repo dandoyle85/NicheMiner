@@ -1,4 +1,4 @@
-// fetch-keywords.js — Phase 8.1 Clean
+// fetch-keywords.js — Phase 8.1.1 Full Bundle
 import { saveKeywords } from './supabase-client.js';
 
 const API_BASE = "/api";
@@ -21,13 +21,14 @@ async function getSources(niche) {
     jget("/autocomplete", { src:"etsy", q:niche }),
     jget("/autocomplete", { src:"pinterest", q:niche }),
     jget("/paa", { q:niche+" questions" }),
+    jget("/trends", { q:niche })
   ]);
 
   const merged = [];
   results.forEach((r,i) => {
     if (r.status === "fulfilled") {
-      const key = i < 6 ? "suggestions" : "questions";
-      (r.value[key]||[]).forEach(s => merged.push({ keyword:s, source:Object.keys(r.value)[0]||"src" }));
+      const key = i < 7 ? "suggestions" : "suggestions";
+      (r.value[key]||[]).forEach(s => merged.push({ keyword:s, source:r.value.src||"src" }));
     } else {
       console.warn("Source failed", r.reason);
     }
