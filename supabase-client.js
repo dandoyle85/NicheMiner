@@ -7,20 +7,16 @@ const supabaseKey = SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
-export async function getAffiliateLinks(niche) {
-  const { data, error } = await supabase.from("affiliate_links").select("*").eq("niche", niche).order("id", { ascending: false });
-  if (error) { console.error("getAffiliateLinks error:", error.message); return []; }
-  return data || [];
-}
-
-export async function addAffiliateLink(niche, url) {
-  const { data, error } = await supabase.from("affiliate_links").insert({ niche, url }).select().single();
-  if (error) { console.error("addAffiliateLink error:", error.message); return null; }
+// Keywords
+export async function saveKeywords(niche, keywords) {
+  const payload = keywords.map(k => ({ niche, keyword: k.keyword, volume: k.volume, competition: k.competition }));
+  const { data, error } = await supabase.from("keywords").insert(payload).select();
+  if (error) { console.error("saveKeywords error:", error.message); return null; }
   return data;
 }
 
-export async function getSites() {
-  const { data, error } = await supabase.from("sites").select("*").order("name");
-  if (error) { console.error("getSites error:", error.message); return []; }
+export async function getKeywords(niche) {
+  const { data, error } = await supabase.from("keywords").select("*").eq("niche", niche);
+  if (error) { console.error("getKeywords error:", error.message); return []; }
   return data || [];
 }

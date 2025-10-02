@@ -4,210 +4,127 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auto Niche Miner Pro — Phase 6 (Affiliate Hub Scraper)</title>
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<title>Auto Niche Miner Pro — Phase 7 (Niches)</title>
 <style>
-  :root{--bg:#0e1117;--panel:#131a24;--line:#22344d;--muted:#9bb0c5;--text:#e8eef7;--accent:#4ea3ff;--good:#2e7d32}
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto}
-  header{background:#0b1018;padding:12px;border-bottom:1px solid var(--line)}
-  h1{margin:0;font-size:18px} .sub{font-size:13px;color:var(--muted)}
+  body{margin:0;background:#0e1117;color:#e8eef7;font-family:system-ui,-apple-system,Segoe UI,Roboto}
+  header{background:#0b1018;padding:12px;border-bottom:1px solid #22344d}
+  h1{margin:0;font-size:18px}
   nav{display:flex;gap:16px;margin-top:8px}
-  nav a{color:#9bb0c5;text-decoration:none;padding:6px 10px;border-radius:8px;border:1px solid transparent}
-  nav a.active{color:#cfe1ff;border-color:#2c3f5c;background:#0f1623}
+  nav a{color:#9bb0c5;text-decoration:none;padding:6px 10px;border-radius:8px}
+  nav a.active{color:#cfe1ff;background:#0f1623;border:1px solid #2c3f5c}
   .wrap{max-width:1200px;margin:0 auto;padding:14px}
-  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:14px}
-  .col{flex:1;min-width:300px}
-  .btn{padding:8px 10px;border:none;border-radius:8px;cursor:pointer}
-  .btn-primary{background:#1d3a6a;color:#cfe1ff;border:1px solid #2f4c70}
+  .card{background:#131a24;border:1px solid #22344d;border-radius:12px;padding:14px;margin-top:14px}
+  .btn{padding:6px 10px;border:none;border-radius:8px;cursor:pointer}
+  .btn-primary{background:#1d3a6a;color:#cfe1ff}
   .btn-apply{background:#2e7d32;color:#fff}
-  .btn-ghost{background:#0e1420;color:#cfe1ff;border:1px solid #23334b}
-  input[type=text], select{padding:8px;border-radius:8px;border:1px solid var(--line);background:#0e1420;color:#cfe1ff}
-  table{width:100%;border-collapse:collapse;font-size:13px}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
   th,td{padding:8px;border-bottom:1px solid #1c2535;text-align:left}
   th{background:#0e1420;color:#a7b4c7;font-size:11px;text-transform:uppercase}
-  .pill{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid #2a3a50;color:#bcd2f0;font-size:12px}
-  .right{margin-left:auto}
   .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;background:#22344d;color:#cfe1ff;border:1px solid #2f4c70;border-radius:8px;padding:8px 12px;opacity:0;transition:opacity .25s ease;z-index:50}
   .toast.show{opacity:1}
 </style>
 </head>
 <body>
 <header>
-  <h1>🧭 Auto Niche Miner Pro — Phase 6</h1>
-  <div class="sub">Affiliate Hub Scraper (mock data) • Save links to Supabase • Auto-inject toggle (local)</div>
+  <h1>🧭 Auto Niche Miner Pro — Phase 7</h1>
   <nav>
     <a href="#" id="navEmpire">Empire</a>
-    <a href="#" id="navHub" class="active">Affiliate Hub</a>
+    <a href="#" id="navHub">Affiliate Hub</a>
+    <a href="#" id="navNiches" class="active">Niches</a>
   </nav>
 </header>
 
 <main class="wrap">
-  <!-- Affiliate Hub Page -->
-  <section class="card" id="hub">
-    <div class="row">
-      <h3 style="margin:0">💼 Affiliate Hub</h3>
-      <div class="right row">
-        <label class="sub">Niche:</label>
-        <select id="nicheSelect">
-          <option value="drones">Drones</option>
-          <option value="fitness">Fitness</option>
-          <option value="home improvement">Home Improvement</option>
-          <option value="solar">Solar</option>
-        </select>
-        <button class="btn btn-primary" id="scanBtn">Scan Competitors</button>
-      </div>
-    </div>
-
-    <div class="row" style="margin-top:12px">
-      <div class="col card">
-        <div class="row">
-          <h4 style="margin:0">🔎 Discovered Offers</h4>
-          <span class="pill right" id="offerCount">0 found</span>
-        </div>
-        <table id="offersTable">
-          <thead><tr><th>Program</th><th>Payout</th><th>Actions</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-
-      <div class="col card">
-        <div class="row">
-          <h4 style="margin:0">🔑 My Links (Saved)</h4>
-          <span class="pill right" id="savedCount">0 saved</span>
-        </div>
-        <table id="savedTable">
-          <thead><tr><th>URL</th><th>Auto Inject</th></tr></thead>
-          <tbody></tbody>
-        </table>
-        <div class="row" style="margin-top:10px">
-          <input id="addUrl" type="text" placeholder="https://affiliate.example/your-id"/>
-          <button class="btn btn-apply" id="addLinkBtn">Save Link</button>
-        </div>
-      </div>
-    </div>
+  <!-- Niches Page -->
+  <section class="card" id="niches">
+    <h3>🔥 Trending Niches (Mock Data)</h3>
+    <table id="nicheTable">
+      <thead><tr><th>Niche</th><th>Actions</th></tr></thead>
+      <tbody></tbody>
+    </table>
   </section>
 
-  <!-- Placeholder for Empire page link -->
-  <section class="card" id="empire" style="display:none">
-    <h3>🏰 Empire (placeholder)</h3>
-    <p class="sub">Use earlier Phase zip for full empire dashboard. This page is a stub to show nav structure.</p>
+  <!-- Keyword Drilldown -->
+  <section class="card" id="keywords" style="display:none">
+    <h3 id="kwTitle">Keywords</h3>
+    <table id="keywordTable">
+      <thead><tr><th>Select</th><th>Keyword</th><th>Volume</th><th>Competition</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <button class="btn btn-apply" id="saveKeywordsBtn">Save Selection</button>
   </section>
 </main>
 
 <div class="toast" id="toast"></div>
 
 <script type="module">
-  import { getAffiliateLinks, addAffiliateLink, getSites } from './supabase-client.js';
+  import { saveKeywords } from './supabase-client.js';
 
-  // --- Mock competitor scan results by niche ---
-  const MOCK_OFFERS = {
-    "drones":[
-      {name:"DJI Store", payout:"3% CPA", url:"https://store.dji.com/pages/affiliate"},
-      {name:"Amazon Drones", payout:"Up to 3%", url:"https://affiliate-program.amazon.com/"},
-      {name:"Skydio", payout:"2-4% CPA", url:"https://www.skydio.com/partners"}
+  const MOCK_NICHES = ["Drones","Solar Panels","Home Fitness","Smart Home","Outdoor Gear"];
+  const MOCK_KEYWORDS = {
+    "Drones":[
+      {keyword:"best drones under 500",volume:12000,competition:"Low"},
+      {keyword:"drone mapping software",volume:8000,competition:"Medium"},
+      {keyword:"fpv drones racing",volume:5000,competition:"High"}
     ],
-    "fitness":[
-      {name:"ClickBank: FatBurnX", payout:"50% CPA", url:"https://accounts.clickbank.com/signup/"},
-      {name:"Amazon Resistance Bands", payout:"Up to 3%", url:"https://affiliate-program.amazon.com/"}
+    "Solar Panels":[
+      {keyword:"solar panel installation cost",volume:15000,competition:"Medium"},
+      {keyword:"best home solar kits",volume:9000,competition:"Low"}
     ],
-    "home improvement":[
-      {name:"Impact: PowerTools", payout:"10% CPA", url:"https://impact.com/"},
-      {name:"Amazon Tools", payout:"Up to 3%", url:"https://affiliate-program.amazon.com/"}
-    ],
-    "solar":[
-      {name:"Bluetti", payout:"5% CPA", url:"https://www.bluettipower.com/pages/affiliate-program"},
-      {name:"Jackery", payout:"3-5% CPA", url:"https://www.jackery.com/pages/affiliate-program"}
+    "Home Fitness":[
+      {keyword:"resistance band workout",volume:10000,competition:"Low"},
+      {keyword:"best home treadmill",volume:7000,competition:"Medium"}
     ]
   };
 
-  // Local auto-inject toggles per niche (demo only)
-  const autoInject = JSON.parse(localStorage.getItem("autoInject")||"{}");
+  const nicheTableBody=document.querySelector("#nicheTable tbody");
+  const kwTableBody=document.querySelector("#keywordTable tbody");
+  const kwSection=document.getElementById("keywords");
+  let currentNiche=null;
 
-  const nicheSel = document.getElementById("nicheSelect");
-  const offersTbody = document.querySelector("#offersTable tbody");
-  const savedTbody = document.querySelector("#savedTable tbody");
-
-  document.getElementById("navHub").onclick = (e)=>{ e.preventDefault(); show("hub"); };
-  document.getElementById("navEmpire").onclick = (e)=>{ e.preventDefault(); show("empire"); };
-
-  function show(which){
-    document.getElementById("hub").style.display = which==="hub" ? "block":"none";
-    document.getElementById("empire").style.display = which==="empire" ? "block":"none";
-    document.getElementById("navHub").classList.toggle("active", which==="hub");
-    document.getElementById("navEmpire").classList.toggle("active", which==="empire");
+  function renderNiches(){
+    nicheTableBody.innerHTML="";
+    MOCK_NICHES.forEach(n=>{
+      const tr=document.createElement("tr");
+      tr.innerHTML=\`<td>\${n}</td><td><button class="btn btn-primary">Drill Keywords</button></td>\`;
+      tr.querySelector("button").onclick=()=> showKeywords(n);
+      nicheTableBody.appendChild(tr);
+    });
   }
+
+  function showKeywords(niche){
+    currentNiche=niche;
+    document.getElementById("kwTitle").textContent=\`Keywords for \${niche}\`;
+    kwSection.style.display="block";
+    kwTableBody.innerHTML="";
+    const kws=MOCK_KEYWORDS[niche]||[{keyword:"generic keyword",volume:1000,competition:"Low"}];
+    kws.forEach(k=>{
+      const tr=document.createElement("tr");
+      tr.innerHTML=\`<td><input type="checkbox"/></td><td>\${k.keyword}</td><td>\${k.volume}</td><td>\${k.competition}</td>\`;
+      tr.dataset.keyword=JSON.stringify(k);
+      kwTableBody.appendChild(tr);
+    });
+  }
+
+  document.getElementById("saveKeywordsBtn").onclick=async()=>{
+    const selected=[];
+    kwTableBody.querySelectorAll("tr").forEach(tr=>{
+      if(tr.querySelector("input").checked){
+        selected.push(JSON.parse(tr.dataset.keyword));
+      }
+    });
+    if(selected.length===0){toast("No keywords selected");return;}
+    const saved=await saveKeywords(currentNiche,selected);
+    if(saved){toast("✅ "+selected.length+" keywords saved for "+currentNiche);}
+  };
 
   function toast(msg){
     const t=document.getElementById("toast");
     t.textContent=msg; t.classList.add("show");
-    setTimeout(()=> t.classList.remove("show"), 1600);
+    setTimeout(()=> t.classList.remove("show"),1600);
   }
 
-  // Load saved links for current niche
-  async function loadSaved(){
-    const niche = nicheSel.value;
-    const links = await getAffiliateLinks(niche);
-    savedTbody.innerHTML = "";
-    links.forEach(l=>{
-      const tr=document.createElement("tr");
-      tr.innerHTML = \`<td><a href="\${l.url}" target="_blank">\${l.url}</a></td>
-                       <td><input type="checkbox" \${(autoInject[niche]||[]).includes(l.url) ? "checked":""} /></td>\`;
-      const chk = tr.querySelector("input");
-      chk.onchange = ()=>{
-        autoInject[niche] = autoInject[niche] || [];
-        if (chk.checked && !autoInject[niche].includes(l.url)) autoInject[niche].push(l.url);
-        if (!chk.checked) autoInject[niche] = autoInject[niche].filter(u => u!==l.url);
-        localStorage.setItem("autoInject", JSON.stringify(autoInject));
-      };
-      savedTbody.appendChild(tr);
-    });
-    document.getElementById("savedCount").textContent = links.length + " saved";
-  }
-
-  function loadOffers(){
-    const niche = nicheSel.value;
-    const offers = MOCK_OFFERS[niche] || [];
-    offersTbody.innerHTML = "";
-    offers.forEach(o=>{
-      const tr=document.createElement("tr");
-      tr.innerHTML = \`<td>\${o.name}</td><td>\${o.payout}</td>
-                      <td>
-                        <a class="btn btn-ghost" href="\${o.url}" target="_blank">Sign Up</a>
-                        <button class="btn btn-apply">Save Link</button>
-                      </td>\`;
-      tr.querySelector("button").onclick = async ()=>{
-        const saved = await addAffiliateLink(niche, o.url);
-        if (saved){ toast("Saved to My Links"); await loadSaved(); }
-      };
-      offersTbody.appendChild(tr);
-    });
-    document.getElementById("offerCount").textContent = offers.length + " found";
-  }
-
-  document.getElementById("scanBtn").onclick = ()=>{
-    loadOffers();
-    toast("Scan complete (mock)");
-  };
-
-  document.getElementById("addLinkBtn").onclick = async ()=>{
-    const url = (document.getElementById("addUrl").value||"").trim();
-    if (!url) return;
-    const niche = nicheSel.value;
-    const saved = await addAffiliateLink(niche, url);
-    if (saved){ document.getElementById("addUrl").value=""; toast("Link saved"); await loadSaved(); }
-  };
-
-  nicheSel.onchange = ()=>{
-    loadOffers();
-    loadSaved();
-  };
-
-  // init default
-  show("hub");
-  loadOffers();
-  loadSaved();
+  renderNiches();
 </script>
 </body>
 </html>
