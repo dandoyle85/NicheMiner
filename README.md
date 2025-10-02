@@ -1,25 +1,28 @@
-# Auto Niche Miner Pro (Demo)
+# Auto Niche Miner Pro — Cloudflare Pages Ready
 
-This is a demo build of **Auto Niche Miner Pro**, an AI-powered niche + keyword + blog empire builder.
+This repo is prepared for **direct deployment on Cloudflare Pages**.
 
-### Features
-- 🟦 Empire mode & 🟩 Site mode with AI Coach.
-- Rotating AI tips with Apply + Next Tip buttons.
-- Live leaderboard with revenue updates, auto-sorting, and fading change indicators.
-- Progress bars, toasts, charts, and a collapsible mentor coach.
+### ✅ Project Setup
+- Framework preset: **None**
+- Build command: *leave blank*
+- Output directory: `/`
 
-### How to Run Locally
-Just open `index.html` in your browser.
+### 📂 Repo Structure
+```
+/ (root)
+ ├─ index.html
+ └─ README.md
+```
 
-### How to Deploy on Cloudflare Pages
-1. Push this repo to GitHub.
-2. Go to [Cloudflare Pages](https://pages.cloudflare.com/) and connect your repo.
-3. Select:
-   - Framework preset: **None**
-   - Build command: *none*
+### 🚀 Deploy Steps
+1. Create a new GitHub repo (e.g., `auto-niche-miner`).
+2. Upload these two files to the repo root.
+3. Connect GitHub repo to Cloudflare Pages.
+4. In build settings:
+   - Framework: **None**
+   - Build command: *(leave blank)*
    - Output folder: `/`
-4. Deploy → your dashboard will be live at `*.pages.dev`.
+5. Deploy → Cloudflare will serve `index.html` at `yourname.pages.dev`.
 
 ---
-
-This is a front-end only demo. For persistence (multi-site, affiliate links, AI automation), connect to a free backend like **Supabase**.
+This is a static front-end demo. To add persistence (multi-site data, affiliate links, AI automation), you can later connect **Supabase** or another backend.
