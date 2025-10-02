@@ -1,20 +1,26 @@
 
-# Auto Niche Miner Pro — Phase 5
+# Auto Niche Miner Pro — Phase 6
 
-**Affiliate Hub + AdSense Readiness + Niche Pack Export**
+**Affiliate Hub Scraper (Mock) + Save Links to Supabase**
 
 ## What's New
-- **Affiliate Hub**: New nav link (stub for now, expand later).
-- **Site Panel** additions:
-  - 📑 **AdSense Readiness card** with checklist (fake data now)
-  - Button: **Fix Issues** → demo alert for generating missing pages/links
-  - 📦 **Export Niche Pack button** → modal with bundle contents; fake download action
+- **Affiliate Hub page** (separate from Empire):
+  - Select a **niche** (Drones, Fitness, Home Improvement, Solar)
+  - Click **Scan Competitors** → loads **mock discovered offers**
+  - **Sign Up** buttons (open provider pages)
+  - **Save Link** → persists to Supabase `affiliate_links`
+  - **My Links** section shows your saved links per niche
+  - **Auto Inject** toggles per link (stored locally via `localStorage` for demo)
 
 ## Files
-- `index.html` — Phase 5 dashboard + slide-in site panel with AdSense and export pack
-- `supabase-client.js` — same API helpers
-- `README.md` — this file
+- `index.html` — Affiliate Hub UI with mock scraper + Supabase save
+- `supabase-client.js` — helpers used by the Hub (`getAffiliateLinks`, `addAffiliateLink`, `getSites`)
 
 ## Deploy
-- Push to GitHub, deploy with Cloudflare Pages as before.
-- Env vars: `SUPABASE_URL`, `SUPABASE_ANON_KEY`
+- Ensure Cloudflare env vars: `SUPABASE_URL`, `SUPABASE_ANON_KEY`
+- Drop in repo root and deploy (Framework: None, Build: blank, Output: `/`)
+
+## Next (Optional)
+- Persist Auto Inject in DB (new table or column)
+- Real scraping via Workers/Actions (rate-limit safe)
+- Use Hub links in blog/pin/short generators automatically
