@@ -1,28 +1,20 @@
 
-# Auto Niche Miner Pro — Phase 4
+# Auto Niche Miner Pro — Phase 5
 
-**Automation + Goal-Based Optimizer**
+**Affiliate Hub + AdSense Readiness + Niche Pack Export**
 
 ## What's New
-- 🤖 **Automation Engine (demo)** — modal with “Run Automation Now” simulates scheduled runs:
-  - Auto-blog → + (aggression × 3) revenue, +2 traffic/day
-  - Auto-pins → + (aggression × 2) revenue, +3 traffic/day
-  - Auto-shorts → + (aggression × 4) revenue, +4 traffic/day
-- 🎯 **Empire Goal & Optimizer**
-  - Set a revenue goal and enable **Auto Aggression**
-  - “Run Optimizer” sets per-site aggression (1–10) weighted by current performance
-- 🧩 All changes persist via Supabase (`sites`, `settings`)
+- **Affiliate Hub**: New nav link (stub for now, expand later).
+- **Site Panel** additions:
+  - 📑 **AdSense Readiness card** with checklist (fake data now)
+  - Button: **Fix Issues** → demo alert for generating missing pages/links
+  - 📦 **Export Niche Pack button** → modal with bundle contents; fake download action
 
 ## Files
-- `index.html` — Phase 4 UI (automation modal, goal controls, optimizer)
-- `supabase-client.js` — same helper API used in Phases 2–3
+- `index.html` — Phase 5 dashboard + slide-in site panel with AdSense and export pack
+- `supabase-client.js` — same API helpers
+- `README.md` — this file
 
 ## Deploy
-- Cloudflare Pages env vars:
-  - `SUPABASE_URL`
-  - `SUPABASE_ANON_KEY`
-- Build settings: Framework **None**, Build command **(blank)**, Output **/**
-
-## Notes
-- The Automation Engine here is a **front-end simulator** for demoing behavior.
-- For real scheduling later, wire a cron (GitHub Actions or Cloudflare Workers/Pages Functions) to call a serverless function that updates Supabase.
+- Push to GitHub, deploy with Cloudflare Pages as before.
+- Env vars: `SUPABASE_URL`, `SUPABASE_ANON_KEY`
