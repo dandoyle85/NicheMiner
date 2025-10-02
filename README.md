@@ -1,28 +1,21 @@
-# Auto Niche Miner Pro — Cloudflare Pages Ready
+# Auto Niche Miner Pro (Supabase Enabled)
 
-This repo is prepared for **direct deployment on Cloudflare Pages**.
+This version of the dashboard pulls **live site data from Supabase**.
 
-### ✅ Project Setup
-- Framework preset: **None**
-- Build command: *leave blank*
-- Output directory: `/`
+## ✅ Setup
+1. Deploy schema & seed data in Supabase (see SQL scripts).
+2. In Cloudflare Pages, add Environment Variables:
+   - SUPABASE_URL = https://xxxx.supabase.co
+   - SUPABASE_ANON_KEY = your anon key
 
-### 📂 Repo Structure
-```
-/ (root)
- ├─ index.html
- └─ README.md
-```
+## 🚀 Deploy
+- Commit these files to GitHub.
+- Connect to Cloudflare Pages with build settings:
+  - Framework: None
+  - Build command: (blank)
+  - Output folder: /
+- Deploy → see live dashboard pulling from Supabase.
 
-### 🚀 Deploy Steps
-1. Create a new GitHub repo (e.g., `auto-niche-miner`).
-2. Upload these two files to the repo root.
-3. Connect GitHub repo to Cloudflare Pages.
-4. In build settings:
-   - Framework: **None**
-   - Build command: *(leave blank)*
-   - Output folder: `/`
-5. Deploy → Cloudflare will serve `index.html` at `yourname.pages.dev`.
-
----
-This is a static front-end demo. To add persistence (multi-site data, affiliate links, AI automation), you can later connect **Supabase** or another backend.
+## 🔹 Files
+- index.html → Dashboard wired to Supabase
+- supabase-client.js → Supabase connection + helper functions

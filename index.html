@@ -1,50 +1,28 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auto Niche Miner Pro — Demo with Live Leaderboard</title>
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
-body{margin:0;background:#0e1117;color:#e8eef7;font-family:system-ui,-apple-system,Segoe UI,Roboto}
-header{background:#0b1018;border-bottom:1px solid #22344d;padding:12px}
-h1{margin:0;font-size:18px} .sub{font-size:13px;color:#9bb0c5}
-.wrap{max-width:1260px;margin:0 auto;padding:12px}
-.card{background:#131a24;border:1px solid #22344d;border-radius:12px;padding:12px;margin-top:12px}
-.progress{background:#1b2332;border:1px solid #22344d;border-radius:999px;overflow:hidden;height:16px;min-width:240px}
-.bar{height:100%;width:0%}
-.bar.bad{background:#c62828}.bar.warn{background:#f9a825}.bar.good{background:#2e7d32}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{padding:8px 10px;border-bottom:1px solid #1c2535;text-align:left}
-th{background:#0e1420;color:#a7b4c7;font-size:11px;text-transform:uppercase}
-.status-hot{color:#ff7043;font-weight:bold}
-.status-rising{color:#66bb6a}
-.status-cooling{color:#90a4ae}
-.change-indicator{margin-left:6px;font-size:11px;opacity:1;transition:opacity 1s ease}
-/* Sidebar collapsed */
-.sidebar{position:fixed;right:0;top:0;width:300px;height:100%;background:#0b1018;border-left:1px solid #22344d;
-  padding:14px 12px;overflow:auto;z-index:20;transform:translateX(100%);transition:transform .3s ease}
-.sidebar.open{transform:translateX(0)}
-#coachToggle{position:fixed;right:0;top:50%;transform:translateY(-50%);background:#174026;color:#fff;padding:8px;cursor:pointer;border-top-left-radius:8px;border-bottom-left-radius:8px;z-index:25}
-@media(max-width:760px){
-  #coachToggle{bottom:0;top:auto;left:0;right:0;width:100%;text-align:center;border-radius:0}
-}
-#coachMsg{min-height:70px;line-height:1.4}
-#applyCoach,#nextTip{margin-top:6px;display:block}
-.toast{position:fixed;right:14px;bottom:14px;padding:10px 12px;border-radius:8px;opacity:0;transform:translateY(8px);transition:all .25s ease;z-index:50}
-.toast.show{opacity:1;transform:translateY(0)}
-.toast.site{background:#10391f;color:#bdf9c6}
-.toast.empire{background:#0e2b52;color:#c6e4ff}
-.coach-empire{color:#4ea3ff}
-.coach-site{color:#4cd964}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto Niche Miner Pro — Supabase Live Demo</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body{margin:0;background:#0e1117;color:#e8eef7;font-family:system-ui,-apple-system,Segoe UI,Roboto}
+    header{background:#0b1018;border-bottom:1px solid #22344d;padding:12px}
+    h1{margin:0;font-size:18px} .sub{font-size:13px;color:#9bb0c5}
+    .wrap{max-width:1260px;margin:0 auto;padding:12px}
+    .card{background:#131a24;border:1px solid #22344d;border-radius:12px;padding:12px;margin-top:12px}
+    .progress{background:#1b2332;border:1px solid #22344d;border-radius:999px;overflow:hidden;height:16px;min-width:240px}
+    .bar{height:100%;width:0%;background:#2e7d32}
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    th,td{padding:8px 10px;border-bottom:1px solid #1c2535;text-align:left}
+    th{background:#0e1420;color:#a7b4c7;font-size:11px;text-transform:uppercase}
+  </style>
 </head>
 <body>
 <header>
-  <h1>🧭 Auto Niche Miner Pro — Full Demo</h1>
-  <div class="sub">Empire Overview • Per-Site Automation • Mentor AI Coach</div>
+  <h1>🧭 Auto Niche Miner Pro — Supabase Live Demo</h1>
+  <div class="sub">Now pulling live sites & revenue from Supabase</div>
 </header>
 
 <main class="wrap">
@@ -55,169 +33,66 @@ th{background:#0e1420;color:#a7b4c7;font-size:11px;text-transform:uppercase}
 
   <section class="card">
     <h3>💰 Empire Revenue Goal</h3>
-    <div class="progress"><div id="empireBar" class="bar warn" style="width:48%"></div></div>
-    <p id="empireRevText">$970 / $2000 (48%)</p>
+    <div class="progress"><div id="empireBar" class="bar"></div></div>
+    <p id="empireRevText">$0 / $2000 (0%)</p>
   </section>
 
   <section class="card">
     <h3>🌐 Empire Traffic (30d)</h3>
     <canvas id="empireChart" height="120"></canvas>
   </section>
-
-  <section class="card">
-    <h3>🌐 Select Site</h3>
-    <select id="siteSelect">
-      <option value="empire">-- Empire Overview --</option>
-      <option value="dronetrends.com">dronetrends.com</option>
-      <option value="homediyhub.net">homediyhub.net</option>
-      <option value="solarmaintenancepro.com">solarmaintenancepro.com</option>
-    </select>
-  </section>
 </main>
 
-<div id="coachToggle">💡 Coach</div>
-<aside class="sidebar" id="coachSidebar">
-  <h3>💡 Mentor AI Coach</h3>
-  <div id="coachMsg" class="coach-empire"></div>
-  <button id="applyCoach">✅ Apply This</button>
-  <button id="nextTip">👉 Next Tip</button>
-</aside>
+<script type="module">
+  import { getSites } from './supabase-client.js';
 
-<div id="toast" class="toast"></div>
+  async function initDashboard() {
+    const sites = await getSites();
+    console.log("Loaded from Supabase:", sites);
 
-<script>
-let empireCurrent = 970;
-let empireGoal = 2000;
-let sites = {
-  "dronetrends.com": {rev:120,traffic:[90,92,95,97,100,102]},
-  "homediyhub.net": {rev:210,traffic:[40,42,41,39,38,37]},
-  "solarmaintenancepro.com": {rev:640,traffic:[70,74,78,82,85,90]}
-};
-
-let empireTips = [
-  "🔥 Empire at 48% — double blog output across all sites.",
-  "⚡ Enable Pinterest automation empire-wide for a quick traffic lift.",
-  "🎯 Package top posts into an eBook empire-wide."
-];
-let siteTips = [
-  "🚀 Ramp posts and target high-CPC keywords.",
-  "📈 Flip Shorts ON for top posts.",
-  "💡 Package 3 posts into an eBook bundle."
-];
-let empireIndex = 0, siteIndex = 0;
-let currentMode = "empire";
-let currentSite = null;
-
-// Chart
-const ctx=document.getElementById('empireChart').getContext('2d');
-let chart = new Chart(ctx,{
-  type:'line',
-  data:{
-    labels:["D-5","D-4","D-3","D-2","D-1","D-0"],
-    datasets:[
-      {label:"dronetrends.com",data:sites["dronetrends.com"].traffic,borderColor:"rgba(78,163,255,1)",tension:.25},
-      {label:"homediyhub.net",data:sites["homediyhub.net"].traffic,borderColor:"rgba(192,140,255,1)",tension:.25},
-      {label:"solarmaintenancepro.com",data:sites["solarmaintenancepro.com"].traffic,borderColor:"rgba(76,217,100,1)",tension:.25}
-    ]
-  },
-  options:{plugins:{legend:{labels:{color:"#cfe1ff"}}},scales:{x:{ticks:{color:"#9bb0c5"}},y:{ticks:{color:"#9bb0c5"}}}}
-});
-
-function getStatus(rev){
-  if(rev>500) return {text:"🔥 Hot",cls:"status-hot"};
-  if(rev>100) return {text:"🚀 Rising",cls:"status-rising"};
-  return {text:"❄️ Cooling",cls:"status-cooling"};
-}
-
-// Update leaderboard
-function updateLeaderboard(changeSite=null,changeVal=0){
-  let tbody=document.querySelector("#leaderboard tbody");
-  tbody.innerHTML="";
-  let arr=Object.entries(sites).map(([name,data])=>({name,rev:data.rev}));
-  arr.sort((a,b)=>b.rev-a.rev);
-  arr.forEach(row=>{
-    let st=getStatus(row.rev);
-    let tr=document.createElement("tr");
-    let td1=document.createElement("td");
-    td1.textContent=row.name;
-    let td2=document.createElement("td");
-    td2.textContent="$"+row.rev;
-    if(changeSite===row.name && changeVal!==0){
-      let span=document.createElement("span");
-      span.className="change-indicator";
-      span.style.color=changeVal>0?"#66bb6a":"#ef5350";
-      span.textContent=(changeVal>0? " (+"+changeVal+" ↑)" : " ("+changeVal+" ↓)");
-      td2.appendChild(span);
-      setTimeout(()=>{span.style.opacity=0;},3000);
-    }
-    let td3=document.createElement("td");
-    td3.textContent=st.text;
-    td3.className=st.cls;
-    tr.appendChild(td1);tr.appendChild(td2);tr.appendChild(td3);
-    tbody.appendChild(tr);
-  });
-}
-
-function showToast(msg,scope){
-  const t=document.getElementById('toast');
-  t.textContent=msg;
-  t.className='toast show '+scope;
-  setTimeout(()=>{t.classList.remove('show');},1500);
-}
-
-function updateCoach(){
-  if(currentMode==="empire"){
-    document.getElementById('coachMsg').textContent="[Empire Move] "+empireTips[empireIndex];
-    document.getElementById('coachMsg').className="coach-empire";
-  } else {
-    document.getElementById('coachMsg').textContent="[Site Move] "+currentSite+" → "+siteTips[siteIndex];
-    document.getElementById('coachMsg').className="coach-site";
+    buildLeaderboard(sites);
+    buildEmpireStats(sites);
+    buildTrafficChart(sites);
   }
-}
 
-document.getElementById('applyCoach').onclick=()=>{
-  if(currentMode==="empire"){
-    empireCurrent+=100;
-    let pct=Math.round(empireCurrent/empireGoal*100);
-    document.getElementById('empireBar').style.width=pct+"%";
-    document.getElementById('empireRevText').textContent="$"+empireCurrent+" / $"+empireGoal+" ("+pct+"%)";
-    for(let s in sites){ sites[s].rev+=20; sites[s].traffic=sites[s].traffic.map(v=>v+2); }
-    chart.update();
-    showToast("🌐 Applied: "+empireTips[empireIndex],"empire");
-    updateLeaderboard();
-    empireIndex=(empireIndex+1)%empireTips.length;
-  } else {
-    sites[currentSite].rev+=30;
-    sites[currentSite].traffic=sites[currentSite].traffic.map(v=>v+3);
-    chart.update();
-    showToast("✅ Applied: "+siteTips[siteIndex]+" for "+currentSite,"site");
-    updateLeaderboard(currentSite,30);
-    siteIndex=(siteIndex+1)%siteTips.length;
+  function buildLeaderboard(sites) {
+    const tbody=document.querySelector("#leaderboard tbody");
+    tbody.innerHTML="";
+    sites.forEach(site=>{
+      const tr=document.createElement("tr");
+      const td1=document.createElement("td"); td1.textContent=site.name;
+      const td2=document.createElement("td"); td2.textContent="$"+site.revenue;
+      const td3=document.createElement("td"); td3.textContent=site.status;
+      tr.appendChild(td1);tr.appendChild(td2);tr.appendChild(td3);
+      tbody.appendChild(tr);
+    });
   }
-  updateCoach();
-};
 
-document.getElementById('nextTip').onclick=()=>{
-  if(currentMode==="empire"){
-    empireIndex=(empireIndex+1)%empireTips.length;
-  } else {
-    siteIndex=(siteIndex+1)%siteTips.length;
+  function buildEmpireStats(sites) {
+    let empireTotal=sites.reduce((sum,s)=>sum+(s.revenue||0),0);
+    let goal=2000; let pct=Math.round(empireTotal/goal*100);
+    document.getElementById("empireBar").style.width=pct+"%";
+    document.getElementById("empireRevText").textContent="$"+empireTotal+" / $"+goal+" ("+pct+"%)";
   }
-  updateCoach();
-};
 
-document.getElementById('siteSelect').onchange=(e)=>{
-  if(e.target.value==="empire"){ currentMode="empire"; currentSite=null; }
-  else { currentMode="site"; currentSite=e.target.value; }
-  updateCoach();
-};
+  function buildTrafficChart(sites) {
+    const ctx=document.getElementById("empireChart").getContext("2d");
+    new Chart(ctx,{
+      type:"line",
+      data:{
+        labels:["D-5","D-4","D-3","D-2","D-1","D-0"],
+        datasets:sites.map((site,idx)=>({
+          label:site.name,
+          data:site.traffic||[],
+          borderColor:["#4ea3ff","#c08cff","#4cd964"][idx%3],
+          tension:.25
+        }))
+      },
+      options:{plugins:{legend:{labels:{color:"#cfe1ff"}}},scales:{x:{ticks:{color:"#9bb0c5"}},y:{ticks:{color:"#9bb0c5"}}}}
+    });
+  }
 
-updateLeaderboard();
-updateCoach();
-
-document.getElementById('coachToggle').onclick=()=>{
-  document.getElementById('coachSidebar').classList.toggle('open');
-};
+  initDashboard();
 </script>
 </body>
 </html>
