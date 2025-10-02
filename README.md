@@ -1,30 +1,28 @@
-# Auto Niche Miner Pro — Phase 3
 
-This drop adds a **clean slide-in Site Panel** and a **full-screen AI Overview modal**.
+# Auto Niche Miner Pro — Phase 4
 
-## What’s New
-- Click a row in the leaderboard (or use the dropdown) → opens a **slide-in site panel** with:
-  - 30d mini chart, revenue & status
-  - Settings (aggression slider, auto-blog/pins/shorts toggles) — saved to Supabase
-  - Affiliate links list + add box
-  - **Site-specific AI Coach** with “Apply This” (writes to Supabase)
-- ⚡ **AI Overview** floating button (bottom-right) when no site is open
-  - Opens full-screen modal with **stacked recommendations** (one card per site)
-  - “Apply This” per site **or** “Apply All” for bulk changes
+**Automation + Goal-Based Optimizer**
+
+## What's New
+- 🤖 **Automation Engine (demo)** — modal with “Run Automation Now” simulates scheduled runs:
+  - Auto-blog → + (aggression × 3) revenue, +2 traffic/day
+  - Auto-pins → + (aggression × 2) revenue, +3 traffic/day
+  - Auto-shorts → + (aggression × 4) revenue, +4 traffic/day
+- 🎯 **Empire Goal & Optimizer**
+  - Set a revenue goal and enable **Auto Aggression**
+  - “Run Optimizer” sets per-site aggression (1–10) weighted by current performance
+- 🧩 All changes persist via Supabase (`sites`, `settings`)
 
 ## Files
-- `index.html` — Empire dashboard + slide-in panel + AI Overview modal
-- `supabase-client.js` — Supabase helpers for sites, settings, and affiliate links
+- `index.html` — Phase 4 UI (automation modal, goal controls, optimizer)
+- `supabase-client.js` — same helper API used in Phases 2–3
 
 ## Deploy
-1. Ensure Supabase env vars in Cloudflare Pages:
-   - `SUPABASE_URL`
-   - `SUPABASE_ANON_KEY`
-2. Push these files to GitHub (root). Cloudflare Pages settings:
-   - Framework: **None**
-   - Build command: *(blank)*
-   - Output folder: `/`
+- Cloudflare Pages env vars:
+  - `SUPABASE_URL`
+  - `SUPABASE_ANON_KEY`
+- Build settings: Framework **None**, Build command **(blank)**, Output **/**
 
 ## Notes
-- AI actions are simple simulations (bump revenue/traffic, adjust status/settings) to demonstrate flow.
-- You can evolve the coach logic to use your revenue goals and aggression strategy later.
+- The Automation Engine here is a **front-end simulator** for demoing behavior.
+- For real scheduling later, wire a cron (GitHub Actions or Cloudflare Workers/Pages Functions) to call a serverless function that updates Supabase.

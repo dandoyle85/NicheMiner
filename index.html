@@ -1,11 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auto Niche Miner Pro — Phase 3</title>
+<title>Auto Niche Miner Pro — Phase 4 (Automation + Goal Optimizer)</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   :root{--bg:#0e1117;--panel:#131a24;--line:#22344d;--muted:#9bb0c5;--text:#e8eef7;--accent:#4ea3ff;--good:#2e7d32;--warn:#f9a825;--hot:#ff7043;--cool:#90a4ae;--rise:#66bb6a}
   *{box-sizing:border-box}
@@ -23,8 +24,8 @@
   .status-hot{color:var(--hot);font-weight:600}
   .status-rising{color:var(--rise)}
   .status-cooling{color:var(--cool)}
-  /* Slide-in panel */
-  #sitePanel{position:fixed;top:0;right:-34%;height:100%;width:34%;background:#0b1018;border-left:1px solid var(--line);box-shadow:-10px 0 30px rgba(0,0,0,.25);transition:transform .3s ease, right .3s ease;z-index:40}
+  /* Slide-in panel (Phase 3 reuse) */
+  #sitePanel{position:fixed;top:0;right:-34%;height:100%;width:34%;background:#0b1018;border-left:1px solid var(--line);box-shadow:-10px 0 30px rgba(0,0,0,.25);transition:right .3s ease;z-index:40}
   #sitePanel.open{right:0}
   #sitePanel .pad{padding:14px;overflow:auto;height:100%}
   #panelClose{position:absolute;top:8px;right:10px;background:transparent;color:#cfe1ff;border:none;font-size:18px;cursor:pointer}
@@ -32,9 +33,8 @@
   .toggle{display:flex;gap:10px;align-items:center}
   input[type=range]{width:100%}
   .mini-card{background:#0f1623;border:1px solid var(--line);border-radius:10px;padding:10px;margin:8px 0}
-  /* AI Overview floating button */
+  /* AI Overview */
   #aiOverviewBtn{position:fixed;right:14px;bottom:14px;background:#0e2b52;color:#cfe1ff;border:1px solid #275b9a;border-radius:999px;padding:10px 14px;cursor:pointer;z-index:30}
-  /* Full-screen modal */
   #aiModal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:flex-start;justify-content:center;padding:40px;z-index:60}
   #aiModal.open{display:flex}
   #aiModal .sheet{background:#0b1018;border:1px solid var(--line);border-radius:12px;max-width:980px;width:100%;max-height:80vh;overflow:auto;padding:16px;position:relative}
@@ -45,12 +45,20 @@
   .btn-apply{background:#2e7d32;color:#fff}
   .btn-secondary{background:#22344d;color:#cfe1ff}
   .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  /* Automation modal */
+  #autoBtn{position:fixed;left:14px;bottom:14px;background:#174026;color:#e8ffe9;border:1px solid #2c7a3f;border-radius:999px;padding:10px 14px;cursor:pointer;z-index:30}
+  #autoModal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:flex-start;justify-content:center;padding:40px;z-index:60}
+  #autoModal.open{display:flex}
+  #autoModal .sheet{background:#0b1018;border:1px solid var(--line);border-radius:12px;max-width:760px;width:100%;max-height:80vh;overflow:auto;padding:16px;position:relative}
+  #autoModal .close{position:absolute;top:8px;right:10px;background:transparent;color:#cfe1ff;border:none;font-size:18px;cursor:pointer}
+  .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;background:#22344d;color:#cfe1ff;border:1px solid #2f4c70;border-radius:8px;padding:8px 12px;opacity:0;transition:opacity .25s ease}
+  .toast.show{opacity:1}
 </style>
 </head>
 <body>
 <header>
-  <h1>🧭 Auto Niche Miner Pro — Phase 3</h1>
-  <div class="sub">Empire overview • Slide-in site panel • AI overview modal</div>
+  <h1>🧭 Auto Niche Miner Pro — Phase 4</h1>
+  <div class="sub">Automation toggles • Goal-based aggression optimizer • Empire & site AI</div>
 </header>
 
 <main class="wrap">
@@ -67,7 +75,13 @@
 
   <section class="card">
     <h3>💰 Empire Revenue Goal</h3>
-    <div class="progress"><div id="empireBar" class="bar"></div></div>
+    <div class="row">
+      <div class="progress" style="flex:1;min-width:200px"><div id="empireBar" class="bar"></div></div>
+      <input id="goalInput" type="number" min="0" value="2000" style="width:120px;padding:6px;border-radius:8px;border:1px solid var(--line);background:#0e1420;color:#cfe1ff">
+      <button class="btn btn-secondary" id="applyGoalBtn">Set Goal</button>
+      <label class="sub" style="display:flex;align-items:center;gap:6px"><input type="checkbox" id="autoAgg"> Auto Aggression</label>
+      <button class="btn btn-apply" id="runOptimizerBtn">Run Optimizer</button>
+    </div>
     <p id="empireRevText">$0 / $2000 (0%)</p>
   </section>
 
@@ -77,7 +91,7 @@
   </section>
 </main>
 
-<!-- Slide-in Site Panel -->
+<!-- Slide-in Site Panel (from Phase 3) -->
 <aside id="sitePanel">
   <button id="panelClose">✖</button>
   <div class="pad">
@@ -86,12 +100,10 @@
       <strong>Summary</strong>
       <div id="siteSummary" class="sub">—</div>
     </div>
-
     <div class="mini-card">
       <strong>30d Traffic</strong>
       <canvas id="siteChart" height="90"></canvas>
     </div>
-
     <div class="mini-card">
       <strong>Settings</strong>
       <div class="field">Aggression: <span id="aggVal">1</span>
@@ -102,16 +114,6 @@
       <div class="field toggle"><input type="checkbox" id="autoShorts"> <label for="autoShorts">Auto-shorts</label></div>
       <button class="btn btn-secondary" id="saveSettingsBtn">💾 Save Settings</button>
     </div>
-
-    <div class="mini-card">
-      <strong>Affiliate Links</strong>
-      <div id="affList" class="sub">—</div>
-      <div class="row">
-        <input id="affUrl" placeholder="https://..." style="flex:1;padding:6px;border-radius:6px;border:1px solid var(--line);background:#0e1420;color:#cfe1ff">
-        <button class="btn btn-secondary" id="addAffBtn">+ Add</button>
-      </div>
-    </div>
-
     <div class="mini-card">
       <strong>AI Coach (this site)</strong>
       <div id="siteCoachText" class="sub">—</div>
@@ -120,8 +122,9 @@
   </div>
 </aside>
 
-<!-- AI Overview Floating Button -->
+<!-- AI Overview & Automation Buttons -->
 <button id="aiOverviewBtn">⚡ AI Overview</button>
+<button id="autoBtn">🤖 Automation</button>
 
 <!-- Full-screen AI Overview Modal -->
 <div id="aiModal">
@@ -135,10 +138,28 @@
   </div>
 </div>
 
+<!-- Automation Modal -->
+<div id="autoModal">
+  <div class="sheet">
+    <button class="close" id="autoClose">✖</button>
+    <h3>🤖 Automation Engine (Demo)</h3>
+    <p class="sub">This simulates a scheduled run. It will apply effects to sites with toggles enabled.</p>
+    <ul class="sub">
+      <li><strong>Auto-blog:</strong> + (aggression × 3) revenue, +2 traffic/day</li>
+      <li><strong>Auto-pins:</strong> + (aggression × 2) revenue, +3 traffic/day</li>
+      <li><strong>Auto-shorts:</strong> + (aggression × 4) revenue, +4 traffic/day</li>
+    </ul>
+    <button class="btn btn-apply" id="runAutomationNow">Run Automation Now</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <script type="module">
-  import { getSites, upsertSite, getSettings, updateSettings, getAffiliateLinks, addAffiliateLink } from './supabase-client.js';
+  import { getSites, upsertSite, getSettings, updateSettings } from './supabase-client.js';
 
   let SITES = [];
+  let SETTINGS = {}; // cache by siteId
   let EMPIRE_GOAL = 2000;
   let chartEmpire = null;
   let chartSite = null;
@@ -148,12 +169,16 @@
   // ---------- Init ----------
   async function init() {
     SITES = await getSites();
+    renderAll();
+    bindUI();
+    toggleFloatingButtons();
+  }
+
+  function renderAll(){
     renderLeaderboard();
     renderEmpireStats();
     renderEmpireChart();
     buildDropdown();
-    bindGlobalUI();
-    toggleAiButtonVisibility();
   }
 
   // ---------- Renderers ----------
@@ -180,6 +205,7 @@
     const pct = Math.round(total/EMPIRE_GOAL*100);
     document.getElementById("empireBar").style.width = pct+"%";
     document.getElementById("empireRevText").textContent = "$"+total+" / $"+EMPIRE_GOAL+" ("+pct+"%)";
+    document.getElementById("goalInput").value = EMPIRE_GOAL;
   }
 
   function renderEmpireChart() {
@@ -228,42 +254,32 @@
 
     // settings
     currentSettings = await getSettings(currentSite.id) || { aggression: 3, auto_blog:false, auto_pins:false, auto_shorts:false };
+    SETTINGS[currentSite.id] = currentSettings;
     document.getElementById("aggSlider").value = currentSettings.aggression || 1;
     document.getElementById("aggVal").textContent = currentSettings.aggression || 1;
     document.getElementById("autoBlog").checked = !!currentSettings.auto_blog;
     document.getElementById("autoPins").checked = !!currentSettings.auto_pins;
     document.getElementById("autoShorts").checked = !!currentSettings.auto_shorts;
 
-    // affiliate links
-    const niche = nicheFromSite(currentSite.name);
-    const links = await getAffiliateLinks(niche);
-    renderAffList(links);
-
-    // site coach
+    // site coach text
     document.getElementById("siteCoachText").textContent = siteCoachRecommendation(currentSite, currentSettings);
 
     document.getElementById("sitePanel").classList.add("open");
-    toggleAiButtonVisibility();
-  }
-
-  function renderAffList(links){
-    const wrap = document.getElementById("affList");
-    if(!links || !links.length){ wrap.innerHTML = "<em>No links yet.</em>"; return; }
-    wrap.innerHTML = links.map(l=> \`<div><a href="\${l.url}" target="_blank">\${l.url}</a></div>\`).join("");
+    toggleFloatingButtons();
   }
 
   document.getElementById("panelClose").onclick = ()=>{
     document.getElementById("sitePanel").classList.remove("open");
     currentSite = null;
-    toggleAiButtonVisibility();
+    toggleFloatingButtons();
   };
 
-  // settings save
   document.getElementById("aggSlider").oninput = (e)=>{
     document.getElementById("aggVal").textContent = e.target.value;
   };
 
   document.getElementById("saveSettingsBtn").onclick = async ()=>{
+    if(!currentSite) return;
     const values = {
       aggression: parseInt(document.getElementById("aggSlider").value),
       auto_blog: document.getElementById("autoBlog").checked,
@@ -271,52 +287,30 @@
       auto_shorts: document.getElementById("autoShorts").checked
     };
     await updateSettings(currentSite.id, values);
-    alert("Settings saved.");
+    SETTINGS[currentSite.id] = values;
+    toast("Settings saved.");
   };
 
-  // add affiliate link
-  document.getElementById("addAffBtn").onclick = async ()=>{
-    const url = (document.getElementById("affUrl").value || "").trim();
-    if(!url) return;
-    const niche = nicheFromSite(currentSite.name);
-    await addAffiliateLink(niche, url);
-    const links = await getAffiliateLinks(niche);
-    renderAffList(links);
-    document.getElementById("affUrl").value = "";
-  };
-
-  // site coach apply
   document.getElementById("siteApplyBtn").onclick = async ()=>{
     if(!currentSite) return;
-    // basic growth based on aggression
-    const ag = parseInt(document.getElementById("aggSlider").value)||3;
-    const revBoost = 10 + ag * 4; // scale with aggression
+    const ag = (SETTINGS[currentSite.id]?.aggression)||3;
+    const revBoost = 10 + ag * 4;
     currentSite.revenue = (currentSite.revenue||0) + revBoost;
     currentSite.status = "Rising";
     currentSite.traffic = (currentSite.traffic||[]).map(v=> v + Math.ceil(ag/2));
     await upsertSite(currentSite);
-    // refresh empire
     SITES = await getSites();
-    renderLeaderboard(); renderEmpireStats(); renderEmpireChart();
-    // refresh panel summary
-    document.getElementById("siteSummary").textContent = "Revenue $"+(currentSite.revenue||0)+" • Status "+(currentSite.status||'-');
-    alert("Applied: "+revBoost+" revenue to "+currentSite.name);
+    renderAll();
+    toast("Applied on "+currentSite.name+" (+"+revBoost+")");
   };
 
-  // ---------- AI Overview Modal ----------
-  function toggleAiButtonVisibility(){
-    const btn = document.getElementById("aiOverviewBtn");
-    if(document.getElementById("sitePanel").classList.contains("open")) btn.style.display="none";
-    else btn.style.display="block";
-  }
-
+  // ---------- AI Overview (unchanged logic) ----------
   document.getElementById("aiOverviewBtn").onclick = ()=> openAiModal();
   document.getElementById("aiClose").onclick = ()=> document.getElementById("aiModal").classList.remove("open");
 
   async function openAiModal(){
     const container = document.getElementById("aiCards");
     container.innerHTML = "";
-    // Build stacked cards
     for (const s of SITES){
       const st = statusClass(s.status);
       const rec = overviewRecommendation(s);
@@ -329,8 +323,8 @@
         <button class="btn btn-apply">Apply This</button>
       \`;
       card.querySelector("button").onclick = async ()=>{
-        const applied = await applyOverviewAction(s, rec);
-        if(applied){ await postApplyRefresh(); }
+        await applyOverviewAction(s, rec);
+        await postApplyRefresh();
       };
       container.appendChild(card);
     }
@@ -347,57 +341,103 @@
 
   async function postApplyRefresh(){
     SITES = await getSites();
-    renderLeaderboard(); renderEmpireStats(); renderEmpireChart();
+    renderAll();
     document.getElementById("aiModal").classList.remove("open");
-    alert("AI actions applied.");
+    toast("AI actions applied.");
   }
 
-  // ---------- Recommendation Logic ----------
   function overviewRecommendation(site){
-    // decide based on status & revenue
     if ((site.status||'').toLowerCase()==='cooling'){
-      return { text: "Cooling detected → add +30 revenue, +2/day traffic and mark Rising.", rev:30, traf:2, newStatus:"Rising", setPins:false };
+      return { text: "Cooling → +30 revenue, +2/day traffic, mark Rising.", rev:30, traf:2, newStatus:"Rising", setPins:false };
     }
     if (site.revenue>500){
-      return { text: "Hot site → enable Auto-Pins for scale; light +10 revenue bump.", rev:10, traf:1, newStatus:"Hot", setPins:true };
+      return { text: "Hot → enable Auto-Pins; +10 revenue, +1/day traffic.", rev:10, traf:1, newStatus:"Hot", setPins:true };
     }
-    return { text: "Rising site → steady +20 revenue and +1/day traffic.", rev:20, traf:1, newStatus:"Rising", setPins:false };
-  }
-
-  function siteCoachRecommendation(site, settings){
-    const ag = settings.aggression||3;
-    if ((site.status||'').toLowerCase()==='cooling') return "Cooling → Increase aggression to "+Math.max(ag,6)+", add +30 revenue & +2/day traffic.";
-    if (ag<5) return "Aggression below 5 → raise to 6 and schedule 3 posts.";
-    if (ag>7 && !settings.auto_pins) return "High aggression → enable Auto-Pins for scale.";
-    return "Healthy trend → maintain cadence; small +10 revenue bump.";
+    return { text: "Rising → steady +20 revenue, +1/day traffic.", rev:20, traf:1, newStatus:"Rising", setPins:false };
   }
 
   async function applyOverviewAction(site, rec){
-    // update site
     site.revenue = (site.revenue||0) + rec.rev;
     site.traffic = (site.traffic||[]).map(v=> v + rec.traf);
     site.status = rec.newStatus;
     await upsertSite(site);
-    // maybe update settings
     if (rec.setPins){
       await updateSettings(site.id, { auto_pins: true });
+      SETTINGS[site.id] = { ...(SETTINGS[site.id]||{}), auto_pins:true };
     }
-    return true;
   }
 
-  function nicheFromSite(name){
-    if(name.includes("drone")) return "drones";
-    if(name.includes("solar")) return "solar";
-    if(name.includes("diy")) return "home improvement";
-    return "general";
+  // ---------- Automation Modal ----------
+  document.getElementById("autoBtn").onclick = ()=> document.getElementById("autoModal").classList.add("open");
+  document.getElementById("autoClose").onclick = ()=> document.getElementById("autoModal").classList.remove("open");
+
+  document.getElementById("runAutomationNow").onclick = async ()=>{
+    // Simulate a scheduled run
+    for (const s of SITES){
+      const set = SETTINGS[s.id] || await getSettings(s.id) || {aggression:3, auto_blog:false, auto_pins:false, auto_shorts:false};
+      SETTINGS[s.id] = set;
+      let boost = 0, traf = 0;
+      if (set.auto_blog){ boost += set.aggression*3; traf += 2; }
+      if (set.auto_pins){ boost += set.aggression*2; traf += 3; }
+      if (set.auto_shorts){ boost += set.aggression*4; traf += 4; }
+      if (boost>0 || traf>0){
+        s.revenue = (s.revenue||0) + boost;
+        s.traffic = (s.traffic||[]).map(v=> v + traf);
+        s.status = "Rising";
+        await upsertSite(s);
+      }
+    }
+    SITES = await getSites();
+    renderAll();
+    document.getElementById("autoModal").classList.remove("open");
+    toast("Automation run complete.");
+  };
+
+  // ---------- Goal-based Aggression Optimizer ----------
+  document.getElementById("applyGoalBtn").onclick = ()=>{
+    const v = parseInt(document.getElementById("goalInput").value)||2000;
+    EMPIRE_GOAL = v;
+    renderEmpireStats();
+    toast("Goal set to $"+EMPIRE_GOAL);
+  };
+
+  document.getElementById("runOptimizerBtn").onclick = async ()=>{
+    const total = SITES.reduce((s,x)=>s+(x.revenue||0),0);
+    const deficit = Math.max(0, EMPIRE_GOAL - total);
+    if (deficit===0){ toast("Goal already met."); return; }
+    // Simple split: bias hotter sites slightly
+    const sumRev = SITES.reduce((s,x)=>s+(x.revenue||0),0)||1;
+    for (const s of SITES){
+      const share = (s.revenue||0)/sumRev; // higher share → higher aggression
+      const targetAgg = Math.min(10, Math.max(3, Math.round(4 + share*6)));
+      await updateSettings(s.id, { aggression: targetAgg });
+      SETTINGS[s.id] = { ...(SETTINGS[s.id]||{}), aggression: targetAgg };
+    }
+    toast("Optimizer set aggression per site to help reach goal.");
+  };
+
+  document.getElementById("autoAgg").onchange = (e)=>{
+    if (e.target.checked){
+      toast("Auto Aggression ON — run optimizer periodically.");
+    } else {
+      toast("Auto Aggression OFF.");
+    }
+  };
+
+  // ---------- Utils ----------
+  function toggleFloatingButtons(){
+    const open = document.getElementById("sitePanel").classList.contains("open");
+    document.getElementById("aiOverviewBtn").style.display = open ? "none":"block";
+    document.getElementById("autoBtn").style.display = open ? "none":"block";
   }
 
-  // ---------- Bindings ----------
-  function bindGlobalUI(){
-    // nothing else right now
+  function toast(msg){
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    setTimeout(()=> t.classList.remove("show"), 1800);
   }
 
-  // kick off
   init();
 </script>
 </body>

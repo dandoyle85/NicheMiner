@@ -1,7 +1,7 @@
+
 // supabase-client.js
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-// Cloudflare Pages should inject these as env vars
 const supabaseUrl = SUPABASE_URL;
 const supabaseKey = SUPABASE_ANON_KEY;
 
@@ -29,14 +29,12 @@ export async function getSettings(siteId) {
 }
 
 export async function updateSettings(siteId, values) {
-  // if settings row doesn't exist, create it
-  const current = await getSettings(siteId);
-  const payload = { site_id: siteId, ...values };
+  const currentRes = await supabase.from("settings").select("*").eq("site_id", siteId).maybeSingle();
   let res;
-  if (current && current.id) {
-    res = await supabase.from("settings").update(values).eq("id", current.id).select().single();
+  if (currentRes.data && currentRes.data.id) {
+    res = await supabase.from("settings").update(values).eq("id", currentRes.data.id).select().single();
   } else {
-    res = await supabase.from("settings").insert(payload).select().single();
+    res = await supabase.from("settings").insert({ site_id: siteId, ...values }).select().single();
   }
   if (res.error) { console.error("updateSettings error:", res.error.message); }
   return res.data;
