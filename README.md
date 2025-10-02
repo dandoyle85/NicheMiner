@@ -1,28 +1,15 @@
-# Auto Niche Miner Pro — Phase 8 (Live + Stable Sources)
+# Auto Niche Miner Pro — Phase 8.1 Clean Bundle
 
-This phase enables **live keyword drilldown** using stable, no-signup sources:
-- **Google Autocomplete** (search)
-- **YouTube Autocomplete**
-- **(Best-effort) Google People Also Ask** — often blocked by CORS in browsers, handled gracefully
-- **Preloaded niches** (fallback while Trends is gated by CORS)
+## What’s Included
+- index.html — Clean UI with Empire, Affiliate Hub (Coming Soon), Niches
+- fetch-keywords.js — Fetches live keywords via /api proxy endpoints
+- supabase-client.js — Supabase integration
+- functions/api/autocomplete.js — Proxy for Google/YouTube/Amazon/Walmart/Etsy/Pinterest
+- functions/api/paa.js — Proxy for People Also Ask
+- functions/api/trends.js — Proxy for related trends
 
-> Open your browser **Console** to see detailed DEBUG logs for each source.
-
-## Files
-- `index.html` — tabs: Empire (basic), Affiliate Hub (tooltip: Coming Soon), Niches (live)
-- `fetch-keywords.js` — scrapers for Google/YouTube autocomplete, PAA best-effort
-- `supabase-client.js` — Supabase client with env var fallbacks and `saveKeywords()`
-
-## Environment Variables (Cloudflare Pages)
-```
-SUPABASE_URL = https://YOUR-PROJECT.supabase.co
-SUPABASE_ANON_KEY = YOUR-ANON-KEY
-```
-> Or hardcode inside `supabase-client.js` fallbacks.
-
-## Supabase
-Ensure the `keywords` table exists. Saved rows include: niche, keyword, source, intent, volume, competition.
-
-## Notes
-- **PAA** parsing is disabled due to CORS limitations in browsers; it's wired as best-effort with clear console logs.
-- In **Phase 8.1**, we can add Amazon/Walmart/Etsy/Pinterest autocomplete and a Cloudflare Worker proxy to safely bypass CORS for PAA/Trends.
+## Deploy
+1. Drop this repo into GitHub.
+2. Set SUPABASE_URL and SUPABASE_ANON_KEY in your Cloudflare environment.
+3. Cloudflare Pages will detect `functions/` and expose `/api/*` endpoints.
+4. Redeploy and test.

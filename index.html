@@ -1,206 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auto Niche Miner Pro — Phase 8 (Live)</title>
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
-  :root{--bg:#0e1117;--panel:#131a24;--line:#22344d;--muted:#9bb0c5;--text:#e8eef7;--accent:#4ea3ff}
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto}
-  header{background:#0b1018;padding:12px;border-bottom:1px solid var(--line)}
-  h1{margin:0;font-size:18px} .sub{font-size:13px;color:var(--muted)}
-  nav{display:flex;gap:16px;margin-top:8px}
-  nav a{color:#9bb0c5;text-decoration:none;padding:6px 10px;border-radius:8px;border:1px solid transparent;position:relative}
-  nav a.active{color:#cfe1ff;border-color:#2c3f5c;background:#0f1623}
-  nav a[aria-disabled="true"]{opacity:.6;cursor:not-allowed}
-  nav a[title]:hover::after{
-    content:attr(title);
-    position:absolute;top:110%;left:0;background:#0f1623;border:1px solid #2c3f5c;
-    color:#cfe1ff;padding:6px 8px;border-radius:8px;font-size:12px;white-space:nowrap
-  }
-  .wrap{max-width:1260px;margin:0 auto;padding:14px}
-  .card{background:#131a24;border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:14px}
-  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-  .btn{padding:8px 10px;border:none;border-radius:8px;cursor:pointer}
-  .btn-primary{background:#1d3a6a;color:#cfe1ff;border:1px solid #2f4c70}
-  .btn-apply{background:#2e7d32;color:#fff}
-  input[type=text], select{padding:8px;border-radius:8px;border:1px solid var(--line);background:#0e1420;color:#cfe1ff}
-  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
-  th,td{padding:8px;border-bottom:1px solid #1c2535;text-align:left}
-  th{background:#0e1420;color:#a7b4c7;font-size:11px;text-transform:uppercase}
-  .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;background:#22344d;color:#cfe1ff;border:1px solid #2f4c70;border-radius:8px;padding:8px 12px;opacity:0;transition:opacity .25s ease;z-index:70}
-  .toast.show{opacity:1}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto Niche Miner Pro — Phase 8.1 Clean</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <h1>🧭 Auto Niche Miner Pro — Phase 8 (Live)</h1>
-  <div class="sub">Empire • Affiliate Hub • Niches (Live Autocomplete + PAA best-effort) — open your browser console for DEBUG logs</div>
-  <nav>
-    <a href="#" id="navEmpire" class="active">Empire</a>
-    <a href="#" id="navHub" title="Coming Soon">Affiliate Hub</a>
-    <a href="#" id="navNiches">Niches</a>
-  </nav>
-</header>
+  <header>
+    <h1>Auto Niche Miner Pro — Phase 8.1 (Clean)</h1>
+    <nav>
+      <button onclick="showTab('empire')">Empire</button>
+      <button onclick="showTab('affiliate')">Affiliate Hub</button>
+      <button onclick="showTab('niches')">Niches</button>
+    </nav>
+  </header>
 
-<main class="wrap">
-  <!-- Empire (simple visibility) -->
-  <section class="card" id="empire">
-    <h3>🏆 Empire</h3>
-    <p class="sub">This tab stays visible so navigation is complete. (Use your Phase 7 build for full Empire features.)</p>
-    <div id="empireHint" class="sub">Fetching sites from Supabase…</div>
-    <table id="empireTable"><thead><tr><th>Site</th><th>Revenue</th><th>Status</th></tr></thead><tbody></tbody></table>
-  </section>
+  <main>
+    <section id="empire" class="tab">
+      <h2>🏆 Empire Leaderboard</h2>
+      <p>Fetching sites from Supabase...</p>
+      <table id="empireTable">
+        <thead><tr><th>Site</th><th>Revenue</th><th>Status</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
 
-  <!-- Affiliate Hub (stubbed with tooltip) -->
-  <section class="card" id="hub" style="display:none">
-    <h3>💼 Affiliate Hub</h3>
-    <p class="sub">Coming Soon — Live affiliate offer discovery will land in Phase 8.1. Hover on the tab shows this hint.</p>
-  </section>
+    <section id="affiliate" class="tab" style="display:none;">
+      <h2>🤝 Affiliate Hub</h2>
+      <p title="Coming Soon">Affiliate integrations coming soon...</p>
+    </section>
 
-  <!-- Niches (LIVE) -->
-  <section class="card" id="niches" style="display:none">
-    <div class="row">
-      <h3 style="margin:0">🔥 Niches</h3>
-      <div class="sub">Preloaded + Google Trends fallback</div>
-      <div style="margin-left:auto" class="row">
-        <button class="btn btn-primary" id="refreshNichesBtn">Refresh Niches</button>
-      </div>
-    </div>
-    <table id="nicheTable"><thead><tr><th>Niche</th><th>Actions</th></tr></thead><tbody></tbody></table>
-  </section>
+    <section id="niches" class="tab" style="display:none;">
+      <h2>🌐 Niches</h2>
+      <div id="nicheList"></div>
+      <table id="keywordTable">
+        <thead><tr><th>Keyword</th><th>Source</th><th>Volume</th><th>Competition</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
 
-  <!-- Keyword Drilldown -->
-  <section class="card" id="keywords" style="display:none">
-    <h3 id="kwTitle">Keywords</h3>
-    <table id="keywordTable"><thead><tr><th>Select</th><th>Keyword</th><th>Source</th><th>Intent</th><th>Volume</th><th>Competition</th></tr></thead><tbody></tbody></table>
-    <button class="btn btn-apply" id="saveKeywordsBtn">Save Selection</button>
-  </section>
-</main>
-
-<div class="toast" id="toast"></div>
-
-<script type="module">
-  import { getSites, saveKeywords } from './supabase-client.js';
-  import { getPreloadedNiches, fetchKeywordsForNiche } from './fetch-keywords.js';
-
-  // ---------- Nav with tooltips ----------
-  const tabs = { empire:"empire", hub:"hub", niches:"niches" };
-  const navEmpire = document.getElementById("navEmpire");
-  const navHub = document.getElementById("navHub");
-  const navNiches = document.getElementById("navNiches");
-
-  function showTab(which){
-    for(const k of Object.values(tabs)){
-      document.getElementById(k).style.display = (k===which) ? "block":"none";
+  <script src="supabase-client.js"></script>
+  <script type="module" src="fetch-keywords.js"></script>
+  <script>
+    function showTab(tabId) {
+      document.querySelectorAll('.tab').forEach(el => el.style.display = 'none');
+      document.getElementById(tabId).style.display = 'block';
     }
-    document.querySelectorAll("nav a").forEach(a=>a.classList.remove("active"));
-    document.getElementById("nav"+which.charAt(0).toUpperCase()+which.slice(1)).classList.add("active");
-  }
-
-  navEmpire.onclick = (e)=>{ e.preventDefault(); showTab("empire"); };
-  navHub.onclick = (e)=>{ e.preventDefault(); showTab("hub"); }; // tooltip indicates coming soon
-  navNiches.onclick = (e)=>{ e.preventDefault(); showTab("niches"); };
-
-  // ---------- Toast ----------
-  function toast(msg){
-    const t=document.getElementById("toast");
-    t.textContent=msg; t.classList.add("show");
-    setTimeout(()=> t.classList.remove("show"), 1600);
-  }
-
-  // ---------- Empire (basic list) ----------
-  async function loadEmpire(){
-    const rows = await getSites();
-    console.debug("[Empire] sites", rows);
-    const tbody = document.querySelector("#empireTable tbody");
-    const hint = document.getElementById("empireHint");
-    tbody.innerHTML = "";
-    if(!rows || !rows.length){
-      hint.textContent = "No sites yet — seed your Supabase 'sites' table to see data.";
-      return;
-    }
-    hint.textContent = "";
-    rows.forEach(r=>{
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${r.name||"-"}</td><td>$${r.revenue||0}</td><td>${r.status||"-"}</td>`;
-      tbody.appendChild(tr);
-    });
-  }
-
-  // ---------- Niches (live drilldown) ----------
-  const nicheTbody = document.querySelector("#nicheTable tbody");
-  const kwTbody = document.querySelector("#keywordTable tbody");
-  const kwTitle = document.getElementById("kwTitle");
-  let currentNiche = null;
-
-  async function renderNiches(){
-    nicheTbody.innerHTML = "";
-    const niches = await getPreloadedNiches(); // Trends fallback in file
-    console.debug("[Niches] Seed list", niches);
-    niches.forEach(n => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${n}</td><td><button class="btn btn-primary">Drill Keywords</button></td>`;
-      tr.querySelector("button").onclick = ()=> drillNiche(n);
-      nicheTbody.appendChild(tr);
-    });
-  }
-
-  async function drillNiche(niche){
-    currentNiche = niche;
-    kwTitle.textContent = "Keywords for " + niche;
-    document.getElementById("keywords").style.display = "block";
-    kwTbody.innerHTML = `<tr><td colspan="6" class="sub">Fetching live keywords… check console for debug logs.</td></tr>`;
-    try{
-      const results = await fetchKeywordsForNiche(niche);
-      kwTbody.innerHTML = "";
-      results.forEach(r => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = \`
-          <td><input type="checkbox"></td>
-          <td>\${r.keyword}</td>
-          <td>\${r.source||"-"}</td>
-          <td>\${r.intent||"-"}</td>
-          <td>\${r.volume||"-"}</td>
-          <td>\${r.competition||"-"}</td>\`;
-        tr.dataset.row = JSON.stringify(r);
-        kwTbody.appendChild(tr);
-      });
-      toast("Loaded " + results.length + " keywords");
-    }catch(e){
-      console.error("[Niche drill] error", e);
-      kwTbody.innerHTML = `<tr><td colspan="6" class="sub">Failed to fetch live keywords. See console.</td></tr>`;
-    }
-  }
-
-  document.getElementById("saveKeywordsBtn").onclick = async ()=>{
-    const selected = [];
-    kwTbody.querySelectorAll("tr").forEach(tr => {
-      const cb = tr.querySelector("input[type=checkbox]");
-      if(cb && cb.checked){
-        selected.push(JSON.parse(tr.dataset.row));
-      }
-    });
-    if(!selected.length){ toast("No keywords selected"); return; }
-    const saved = await saveKeywords(currentNiche, selected);
-    if(saved){ toast("✅ Saved " + selected.length + " for " + currentNiche); }
-    else { toast("Tried to save, but Supabase may not be configured"); }
-  };
-
-  document.getElementById("refreshNichesBtn").onclick = async ()=>{
-    toast("Refreshing niches…");
-    await renderNiches();
-  };
-
-  // ---------- Init ----------
-  showTab("empire");
-  loadEmpire();
-  renderNiches();
-
-  console.info("✅ Phase 8 loaded. Open devtools → Console to see live debug logs for sources.");
-</script>
+    showTab('empire');
+  </script>
 </body>
 </html>

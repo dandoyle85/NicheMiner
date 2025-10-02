@@ -1,34 +1,32 @@
-// supabase-client.js (Phase 8) — with env fallbacks
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+// supabase-client.js
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-export const SUPABASE_URL = (typeof SUPABASE_URL !== "undefined") ? SUPABASE_URL : "https://YOUR-PROJECT.supabase.co";
-export const SUPABASE_ANON_KEY = (typeof SUPABASE_ANON_KEY !== "undefined") ? SUPABASE_ANON_KEY : "YOUR-ANON-KEY";
+const SUPABASE_URL = window.SUPABASE_URL || "https://YOURPROJECT.supabase.co";
+const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || "YOUR-ANON-KEY";
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Keywords
-export async function saveKeywords(niche, keywords) {
+export async function saveKeywords(list){
+  if (!list || !list.length) return;
   try {
-    const payload = keywords.map(k => ({
-      niche,
-      keyword: k.keyword,
-      source: k.source || null,
-      intent: k.intent || null,
-      volume: k.volume || null,
-      competition: k.competition || null
-    }));
-    const { data, error } = await supabase.from("keywords").insert(payload).select();
-    if (error) { console.error("saveKeywords error:", error.message); return null; }
-    return data;
-  } catch (e) {
-    console.error("saveKeywords exception:", e);
-    return null;
-  }
+    const { data, error } = await supabase.from("keywords").insert(list);
+    if (error) throw error;
+    console.log("Saved to Supabase", data);
+  } catch (e){ console.error("Supabase error", e); }
 }
 
-// Sites (for Empire tab visibility)
-export async function getSites() {
-  const { data, error } = await supabase.from("sites").select("*").order("name");
-  if (error) { console.error("getSites error:", error.message); return []; }
-  return data || [];
+export async function getSites(){
+  try{
+    const { data, error } = await supabase.from("sites").select("*");
+    if (error) throw error;
+    const tbody=document.querySelector("#empireTable tbody");
+    tbody.innerHTML="";
+    data.forEach(s=>{
+      const tr=document.createElement("tr");
+      tr.innerHTML=`<td>${s.name}</td><td>${s.revenue||0}</td><td>${s.status||"OK"}</td>`;
+      tbody.appendChild(tr);
+    });
+  }catch(e){ console.error("Supabase sites error", e); }
 }
+
+window.addEventListener("DOMContentLoaded",getSites);
