@@ -1,37 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Auto Niche Miner Pro — Phase 2 (AI Coach)</title>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    body{margin:0;background:#0e1117;color:#e8eef7;font-family:system-ui,-apple-system,Segoe UI,Roboto}
-    header{background:#0b1018;border-bottom:1px solid #22344d;padding:12px}
-    h1{margin:0;font-size:18px} .sub{font-size:13px;color:#9bb0c5}
-    .wrap{max-width:1260px;margin:0 auto;padding:12px}
-    .card{background:#131a24;border:1px solid #22344d;border-radius:12px;padding:12px;margin-top:12px}
-    .progress{background:#1b2332;border:1px solid #22344d;border-radius:999px;overflow:hidden;height:16px;min-width:240px}
-    .bar{height:100%;width:0%;background:#2e7d32}
-    table{width:100%;border-collapse:collapse;font-size:13px}
-    th,td{padding:8px 10px;border-bottom:1px solid #1c2535;text-align:left}
-    th{background:#0e1420;color:#a7b4c7;font-size:11px;text-transform:uppercase}
-    #coach{position:fixed;bottom:0;right:0;width:300px;background:#1c2535;border-top-left-radius:10px;border:1px solid #2a3a50;display:none;flex-direction:column}
-    #coach header{background:#24344d;color:#fff;padding:8px;font-size:14px;cursor:pointer}
-    #coach .body{padding:10px;font-size:13px;color:#cfe1ff}
-    #coach button{margin-top:10px;padding:6px 10px;background:#2e7d32;color:#fff;border:none;border-radius:6px;cursor:pointer}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auto Niche Miner Pro — Phase 3</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></></script>
+<style>
+  :root{--bg:#0e1117;--panel:#131a24;--line:#22344d;--muted:#9bb0c5;--text:#e8eef7;--accent:#4ea3ff;--good:#2e7d32;--warn:#f9a825;--hot:#ff7043;--cool:#90a4ae;--rise:#66bb6a}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto}
+  header{background:#0b1018;border-bottom:1px solid var(--line);padding:12px}
+  h1{margin:0;font-size:18px} .sub{font-size:13px;color:var(--muted)}
+  .wrap{max-width:1260px;margin:0 auto;padding:12px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:12px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{padding:8px 10px;border-bottom:1px solid #1c2535;text-align:left}
+  th{background:#0e1420;color:#a7b4c7;font-size:11px;text-transform:uppercase}
+  tr.clickable{cursor:pointer}
+  .progress{background:#1b2332;border:1px solid var(--line);border-radius:999px;overflow:hidden;height:16px;min-width:240px}
+  .bar{height:100%;width:0%;background:var(--warn)}
+  .status-hot{color:var(--hot);font-weight:600}
+  .status-rising{color:var(--rise)}
+  .status-cooling{color:var(--cool)}
+  /* Slide-in panel */
+  #sitePanel{position:fixed;top:0;right:-34%;height:100%;width:34%;background:#0b1018;border-left:1px solid var(--line);box-shadow:-10px 0 30px rgba(0,0,0,.25);transition:transform .3s ease, right .3s ease;z-index:40}
+  #sitePanel.open{right:0}
+  #sitePanel .pad{padding:14px;overflow:auto;height:100%}
+  #panelClose{position:absolute;top:8px;right:10px;background:transparent;color:#cfe1ff;border:none;font-size:18px;cursor:pointer}
+  .field{margin:10px 0}
+  .toggle{display:flex;gap:10px;align-items:center}
+  input[type=range]{width:100%}
+  .mini-card{background:#0f1623;border:1px solid var(--line);border-radius:10px;padding:10px;margin:8px 0}
+  /* AI Overview floating button */
+  #aiOverviewBtn{position:fixed;right:14px;bottom:14px;background:#0e2b52;color:#cfe1ff;border:1px solid #275b9a;border-radius:999px;padding:10px 14px;cursor:pointer;z-index:30}
+  /* Full-screen modal */
+  #aiModal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:flex-start;justify-content:center;padding:40px;z-index:60}
+  #aiModal.open{display:flex}
+  #aiModal .sheet{background:#0b1018;border:1px solid var(--line);border-radius:12px;max-width:980px;width:100%;max-height:80vh;overflow:auto;padding:16px;position:relative}
+  #aiModal .close{position:absolute;top:8px;right:10px;background:transparent;color:#cfe1ff;border:none;font-size:18px;cursor:pointer}
+  .ai-card{border:1px solid var(--line);border-radius:10px;padding:12px;margin:10px 0;background:#0f1623}
+  .ai-card h4{margin:0 0 6px 0}
+  .btn{padding:8px 10px;border:none;border-radius:8px;cursor:pointer}
+  .btn-apply{background:#2e7d32;color:#fff}
+  .btn-secondary{background:#22344d;color:#cfe1ff}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+</style>
 </head>
 <body>
 <header>
-  <h1>🧭 Auto Niche Miner Pro — Phase 2</h1>
-  <div class="sub">AI Coach + Apply button wired to Supabase</div>
+  <h1>🧭 Auto Niche Miner Pro — Phase 3</h1>
+  <div class="sub">Empire overview • Slide-in site panel • AI overview modal</div>
 </header>
 
 <main class="wrap">
   <section class="card">
-    <h3>🏆 Empire Leaderboard</h3>
+    <div class="row">
+      <h3 style="margin:0">🏆 Empire Leaderboard</h3>
+      <div style="margin-left:auto">
+        <label for="siteSelect" class="sub">Quick select:</label>
+        <select id="siteSelect"></select>
+      </div>
+    </div>
     <table id="leaderboard"><thead><tr><th>Site</th><th>Daily Rev</th><th>Status</th></tr></thead><tbody></tbody></table>
   </section>
 
@@ -45,116 +75,330 @@
     <h3>🌐 Empire Traffic (30d)</h3>
     <canvas id="empireChart" height="120"></canvas>
   </section>
-
-  <section class="card">
-    <h3>🔽 Select Site</h3>
-    <select id="siteSelect"></select>
-  </section>
 </main>
 
-<div id="coach">
-  <header onclick="toggleCoach()">💡 AI Coach (click to toggle)</header>
-  <div class="body">
-    <p id="coachText">Loading...</p>
-    <button id="applyBtn">✅ Apply This</button>
+<!-- Slide-in Site Panel -->
+<aside id="sitePanel">
+  <button id="panelClose">✖</button>
+  <div class="pad">
+    <h3 id="panelTitle">Site Details</h3>
+    <div class="mini-card">
+      <strong>Summary</strong>
+      <div id="siteSummary" class="sub">—</div>
+    </div>
+
+    <div class="mini-card">
+      <strong>30d Traffic</strong>
+      <canvas id="siteChart" height="90"></canvas>
+    </div>
+
+    <div class="mini-card">
+      <strong>Settings</strong>
+      <div class="field">Aggression: <span id="aggVal">1</span>
+        <input id="aggSlider" type="range" min="1" max="10" value="1"/>
+      </div>
+      <div class="field toggle"><input type="checkbox" id="autoBlog"> <label for="autoBlog">Auto-blog</label></div>
+      <div class="field toggle"><input type="checkbox" id="autoPins"> <label for="autoPins">Auto-pins</label></div>
+      <div class="field toggle"><input type="checkbox" id="autoShorts"> <label for="autoShorts">Auto-shorts</label></div>
+      <button class="btn btn-secondary" id="saveSettingsBtn">💾 Save Settings</button>
+    </div>
+
+    <div class="mini-card">
+      <strong>Affiliate Links</strong>
+      <div id="affList" class="sub">—</div>
+      <div class="row">
+        <input id="affUrl" placeholder="https://..." style="flex:1;padding:6px;border-radius:6px;border:1px solid var(--line);background:#0e1420;color:#cfe1ff">
+        <button class="btn btn-secondary" id="addAffBtn">+ Add</button>
+      </div>
+    </div>
+
+    <div class="mini-card">
+      <strong>AI Coach (this site)</strong>
+      <div id="siteCoachText" class="sub">—</div>
+      <button class="btn btn-apply" id="siteApplyBtn">✅ Apply This</button>
+    </div>
+  </div>
+</aside>
+
+<!-- AI Overview Floating Button -->
+<button id="aiOverviewBtn">⚡ AI Overview</button>
+
+<!-- Full-screen AI Overview Modal -->
+<div id="aiModal">
+  <div class="sheet">
+    <button class="close" id="aiClose">✖</button>
+    <h3>⚡ AI Overview — Recommendations</h3>
+    <div id="aiCards"></div>
+    <div style="text-align:right;margin-top:10px">
+      <button class="btn btn-apply" id="applyAllBtn">✅ Apply All</button>
+    </div>
   </div>
 </div>
 
 <script type="module">
-  import { getSites, upsertSite } from './supabase-client.js';
+  import { getSites, upsertSite, getSettings, updateSettings, getAffiliateLinks, addAffiliateLink } from './supabase-client.js';
 
-  let currentSites = [];
-  let selectedSite = null;
+  let SITES = [];
+  let EMPIRE_GOAL = 2000;
+  let chartEmpire = null;
+  let chartSite = null;
+  let currentSite = null;
+  let currentSettings = null;
 
-  async function initDashboard() {
-    currentSites = await getSites();
-    buildLeaderboard(currentSites);
-    buildEmpireStats(currentSites);
-    buildTrafficChart(currentSites);
-    buildDropdown(currentSites);
-    pickCoachRecommendation(currentSites);
+  // ---------- Init ----------
+  async function init() {
+    SITES = await getSites();
+    renderLeaderboard();
+    renderEmpireStats();
+    renderEmpireChart();
+    buildDropdown();
+    bindGlobalUI();
+    toggleAiButtonVisibility();
   }
 
-  function buildLeaderboard(sites) {
-    const tbody=document.querySelector("#leaderboard tbody");
-    tbody.innerHTML="";
-    sites.forEach(site=>{
-      const tr=document.createElement("tr");
-      const td1=document.createElement("td"); td1.textContent=site.name;
-      const td2=document.createElement("td"); td2.textContent="$"+site.revenue;
-      const td3=document.createElement("td"); td3.textContent=site.status;
-      tr.appendChild(td1);tr.appendChild(td2);tr.appendChild(td3);
+  // ---------- Renderers ----------
+  function renderLeaderboard() {
+    const tbody = document.querySelector("#leaderboard tbody");
+    tbody.innerHTML = "";
+    SITES.sort((a,b)=> (b.revenue||0) - (a.revenue||0));
+    SITES.forEach(site => {
+      const tr = document.createElement("tr");
+      tr.className = "clickable";
+      tr.onclick = () => openSitePanel(site.id);
+      const st = statusClass(site.status);
+      tr.innerHTML = \`
+        <td>\${site.name}</td>
+        <td>$\${site.revenue||0}</td>
+        <td class="\${st.cls}">\${st.text}</td>
+      \`;
       tbody.appendChild(tr);
     });
   }
 
-  function buildEmpireStats(sites) {
-    let empireTotal=sites.reduce((sum,s)=>sum+(s.revenue||0),0);
-    let goal=2000; let pct=Math.round(empireTotal/goal*100);
-    document.getElementById("empireBar").style.width=pct+"%";
-    document.getElementById("empireRevText").textContent="$"+empireTotal+" / $"+goal+" ("+pct+"%)";
+  function renderEmpireStats() {
+    const total = SITES.reduce((s,x)=>s+(x.revenue||0),0);
+    const pct = Math.round(total/EMPIRE_GOAL*100);
+    document.getElementById("empireBar").style.width = pct+"%";
+    document.getElementById("empireRevText").textContent = "$"+total+" / $"+EMPIRE_GOAL+" ("+pct+"%)";
   }
 
-  function buildTrafficChart(sites) {
-    const ctx=document.getElementById("empireChart").getContext("2d");
-    new Chart(ctx,{
-      type:"line",
-      data:{
-        labels:["D-5","D-4","D-3","D-2","D-1","D-0"],
-        datasets:sites.map((site,idx)=>({
-          label:site.name,
-          data:site.traffic||[],
-          borderColor:["#4ea3ff","#c08cff","#4cd964"][idx%3],
-          tension:.25
-        }))
-      },
-      options:{plugins:{legend:{labels:{color:"#cfe1ff"}}},scales:{x:{ticks:{color:"#9bb0c5"}},y:{ticks:{color:"#9bb0c5"}}}}
-    });
+  function renderEmpireChart() {
+    const ctx = document.getElementById("empireChart").getContext("2d");
+    const labels = ["D-5","D-4","D-3","D-2","D-1","D-0"];
+    const datasets = SITES.map((s, i)=>({
+      label: s.name,
+      data: s.traffic || [],
+      borderColor: ["#4ea3ff","#c08cff","#4cd964","#ffcc66","#66cccc"][i%5],
+      tension: .25
+    }));
+    if (chartEmpire) chartEmpire.destroy();
+    chartEmpire = new Chart(ctx,{type:"line",data:{labels,datasets},options:{plugins:{legend:{labels:{color:"#cfe1ff"}}},scales:{x:{ticks:{color:"#9bb0c5"}},y:{ticks:{color:"#9bb0c5"}}}}});
   }
 
-  function buildDropdown(sites) {
-    const sel=document.getElementById("siteSelect");
-    sel.innerHTML="";
-    sites.forEach(site=>{
-      let opt=document.createElement("option");
-      opt.value=site.id;
-      opt.textContent=site.name;
+  function statusClass(status){
+    if((status||'').toLowerCase()==='hot') return {text:"🔥 Hot", cls:"status-hot"};
+    if((status||'').toLowerCase()==='rising') return {text:"🚀 Rising", cls:"status-rising"};
+    return {text:"❄️ Cooling", cls:"status-cooling"};
+  }
+
+  // ---------- Dropdown ----------
+  function buildDropdown(){
+    const sel = document.getElementById("siteSelect");
+    sel.innerHTML = "";
+    SITES.forEach(s => {
+      const opt = document.createElement("option");
+      opt.value = s.id; opt.textContent = s.name;
       sel.appendChild(opt);
     });
-    sel.addEventListener("change",()=>{
-      let id=parseInt(sel.value);
-      selectedSite=currentSites.find(s=>s.id===id);
-      document.getElementById("coachText").textContent = "AI ready for " + selectedSite.name;
-    });
-    if (sites.length>0){ sel.value=sites[0].id; selectedSite=sites[0]; }
+    sel.onchange = ()=> openSitePanel(parseInt(sel.value));
   }
 
-  function pickCoachRecommendation(sites){
-    // Pick coldest site
-    let target=sites.find(s=>s.status==="Cooling")||sites[0];
-    document.getElementById("coachText").textContent = "Your site "+target.name+" is Cooling. Recommend +30 revenue, +2 traffic, mark as Rising.";
-    document.getElementById("coach").style.display="flex";
+  // ---------- Slide-in Panel ----------
+  async function openSitePanel(siteId){
+    currentSite = SITES.find(s=>s.id===siteId);
+    if(!currentSite) return;
+    document.getElementById("panelTitle").textContent = currentSite.name;
+    document.getElementById("siteSummary").textContent = "Revenue $"+(currentSite.revenue||0)+" • Status "+(currentSite.status||'-');
+
+    // site mini chart
+    const ctx = document.getElementById("siteChart").getContext("2d");
+    const labels = ["D-5","D-4","D-3","D-2","D-1","D-0"];
+    if(chartSite) chartSite.destroy();
+    chartSite = new Chart(ctx,{type:"line",data:{labels,datasets:[{label:currentSite.name,data:currentSite.traffic||[],borderColor:"#4ea3ff",tension:.25}]},options:{plugins:{legend:{labels:{color:"#cfe1ff"}}},scales:{x:{ticks:{color:"#9bb0c5"}},y:{ticks:{color:"#9bb0c5"}}}}});
+
+    // settings
+    currentSettings = await getSettings(currentSite.id) || { aggression: 3, auto_blog:false, auto_pins:false, auto_shorts:false };
+    document.getElementById("aggSlider").value = currentSettings.aggression || 1;
+    document.getElementById("aggVal").textContent = currentSettings.aggression || 1;
+    document.getElementById("autoBlog").checked = !!currentSettings.auto_blog;
+    document.getElementById("autoPins").checked = !!currentSettings.auto_pins;
+    document.getElementById("autoShorts").checked = !!currentSettings.auto_shorts;
+
+    // affiliate links
+    const niche = nicheFromSite(currentSite.name);
+    const links = await getAffiliateLinks(niche);
+    renderAffList(links);
+
+    // site coach
+    document.getElementById("siteCoachText").textContent = siteCoachRecommendation(currentSite, currentSettings);
+
+    document.getElementById("sitePanel").classList.add("open");
+    toggleAiButtonVisibility();
   }
 
-  document.getElementById("applyBtn").addEventListener("click",async()=>{
-    if (!selectedSite) return;
-    selectedSite.revenue=selectedSite.revenue+30;
-    selectedSite.status="Rising";
-    selectedSite.traffic=(selectedSite.traffic||[]).map(v=>v+2);
-    await upsertSite(selectedSite);
-    currentSites=await getSites();
-    buildLeaderboard(currentSites);
-    buildEmpireStats(currentSites);
-    buildTrafficChart(currentSites);
-    alert("AI Coach applied changes to "+selectedSite.name);
-  });
-
-  window.toggleCoach=function(){
-    const el=document.getElementById("coach");
-    if(el.style.height==="30px"){ el.style.height="auto"; } else { el.style.height="30px"; }
+  function renderAffList(links){
+    const wrap = document.getElementById("affList");
+    if(!links || !links.length){ wrap.innerHTML = "<em>No links yet.</em>"; return; }
+    wrap.innerHTML = links.map(l=> \`<div><a href="\${l.url}" target="_blank">\${l.url}</a></div>\`).join("");
   }
 
-  initDashboard();
+  document.getElementById("panelClose").onclick = ()=>{
+    document.getElementById("sitePanel").classList.remove("open");
+    currentSite = null;
+    toggleAiButtonVisibility();
+  };
+
+  // settings save
+  document.getElementById("aggSlider").oninput = (e)=>{
+    document.getElementById("aggVal").textContent = e.target.value;
+  };
+
+  document.getElementById("saveSettingsBtn").onclick = async ()=>{
+    const values = {
+      aggression: parseInt(document.getElementById("aggSlider").value),
+      auto_blog: document.getElementById("autoBlog").checked,
+      auto_pins: document.getElementById("autoPins").checked,
+      auto_shorts: document.getElementById("autoShorts").checked
+    };
+    await updateSettings(currentSite.id, values);
+    alert("Settings saved.");
+  };
+
+  // add affiliate link
+  document.getElementById("addAffBtn").onclick = async ()=>{
+    const url = (document.getElementById("affUrl").value || "").trim();
+    if(!url) return;
+    const niche = nicheFromSite(currentSite.name);
+    await addAffiliateLink(niche, url);
+    const links = await getAffiliateLinks(niche);
+    renderAffList(links);
+    document.getElementById("affUrl").value = "";
+  };
+
+  // site coach apply
+  document.getElementById("siteApplyBtn").onclick = async ()=>{
+    if(!currentSite) return;
+    // basic growth based on aggression
+    const ag = parseInt(document.getElementById("aggSlider").value)||3;
+    const revBoost = 10 + ag * 4; // scale with aggression
+    currentSite.revenue = (currentSite.revenue||0) + revBoost;
+    currentSite.status = "Rising";
+    currentSite.traffic = (currentSite.traffic||[]).map(v=> v + Math.ceil(ag/2));
+    await upsertSite(currentSite);
+    // refresh empire
+    SITES = await getSites();
+    renderLeaderboard(); renderEmpireStats(); renderEmpireChart();
+    // refresh panel summary
+    document.getElementById("siteSummary").textContent = "Revenue $"+(currentSite.revenue||0)+" • Status "+(currentSite.status||'-');
+    alert("Applied: "+revBoost+" revenue to "+currentSite.name);
+  };
+
+  // ---------- AI Overview Modal ----------
+  function toggleAiButtonVisibility(){
+    const btn = document.getElementById("aiOverviewBtn");
+    if(document.getElementById("sitePanel").classList.contains("open")) btn.style.display="none";
+    else btn.style.display="block";
+  }
+
+  document.getElementById("aiOverviewBtn").onclick = ()=> openAiModal();
+  document.getElementById("aiClose").onclick = ()=> document.getElementById("aiModal").classList.remove("open");
+
+  async function openAiModal(){
+    const container = document.getElementById("aiCards");
+    container.innerHTML = "";
+    // Build stacked cards
+    for (const s of SITES){
+      const st = statusClass(s.status);
+      const rec = overviewRecommendation(s);
+      const card = document.createElement("div");
+      card.className = "ai-card";
+      card.innerHTML = \`
+        <h4>\${s.name}</h4>
+        <div class="sub">Status: <span class="\${st.cls}">\${st.text}</span></div>
+        <div style="margin:6px 0 10px 0">\${rec.text}</div>
+        <button class="btn btn-apply">Apply This</button>
+      \`;
+      card.querySelector("button").onclick = async ()=>{
+        const applied = await applyOverviewAction(s, rec);
+        if(applied){ await postApplyRefresh(); }
+      };
+      container.appendChild(card);
+    }
+    document.getElementById("aiModal").classList.add("open");
+  }
+
+  document.getElementById("applyAllBtn").onclick = async ()=>{
+    for (const s of SITES){
+      const rec = overviewRecommendation(s);
+      await applyOverviewAction(s, rec);
+    }
+    await postApplyRefresh();
+  };
+
+  async function postApplyRefresh(){
+    SITES = await getSites();
+    renderLeaderboard(); renderEmpireStats(); renderEmpireChart();
+    document.getElementById("aiModal").classList.remove("open");
+    alert("AI actions applied.");
+  }
+
+  // ---------- Recommendation Logic ----------
+  function overviewRecommendation(site){
+    // decide based on status & revenue
+    if ((site.status||'').toLowerCase()==='cooling'){
+      return { text: "Cooling detected → add +30 revenue, +2/day traffic and mark Rising.", rev:30, traf:2, newStatus:"Rising", setPins:false };
+    }
+    if (site.revenue>500){
+      return { text: "Hot site → enable Auto-Pins for scale; light +10 revenue bump.", rev:10, traf:1, newStatus:"Hot", setPins:true };
+    }
+    return { text: "Rising site → steady +20 revenue and +1/day traffic.", rev:20, traf:1, newStatus:"Rising", setPins:false };
+  }
+
+  function siteCoachRecommendation(site, settings){
+    const ag = settings.aggression||3;
+    if ((site.status||'').toLowerCase()==='cooling') return "Cooling → Increase aggression to "+Math.max(ag,6)+", add +30 revenue & +2/day traffic.";
+    if (ag<5) return "Aggression below 5 → raise to 6 and schedule 3 posts.";
+    if (ag>7 && !settings.auto_pins) return "High aggression → enable Auto-Pins for scale.";
+    return "Healthy trend → maintain cadence; small +10 revenue bump.";
+  }
+
+  async function applyOverviewAction(site, rec){
+    // update site
+    site.revenue = (site.revenue||0) + rec.rev;
+    site.traffic = (site.traffic||[]).map(v=> v + rec.traf);
+    site.status = rec.newStatus;
+    await upsertSite(site);
+    // maybe update settings
+    if (rec.setPins){
+      await updateSettings(site.id, { auto_pins: true });
+    }
+    return true;
+  }
+
+  function nicheFromSite(name){
+    if(name.includes("drone")) return "drones";
+    if(name.includes("solar")) return "solar";
+    if(name.includes("diy")) return "home improvement";
+    return "general";
+  }
+
+  // ---------- Bindings ----------
+  function bindGlobalUI(){
+    // nothing else right now
+  }
+
+  // kick off
+  init();
 </script>
 </body>
 </html>
