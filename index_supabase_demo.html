@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto Niche Miner Pro — Supabase Demo</title>
+</head>
+<body>
+  <h1>Auto Niche Miner Pro</h1>
+  <p>This is a minimal starter showing how to connect Supabase to your dashboard.</p>
+
+  <script type="module">
+    import { getSites, upsertSite } from './supabase-client.js';
+
+    // Example: fetch sites from Supabase
+    getSites().then(sites => {
+      console.log('Sites from Supabase:', sites);
+      if (sites.length === 0) {
+        console.log('No sites yet. Add one using upsertSite.');
+      }
+    });
+
+    // Example: add a site (uncomment to test)
+    // upsertSite({ name: 'dronetrends.com', revenue: 100, traffic: [90,92,95], status: 'Rising' });
+  </script>
+</body>
+</html>
