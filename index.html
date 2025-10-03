@@ -2,91 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Auto Niche Miner Pro — Phase 8.3</title>
-  <link rel="stylesheet" href="/style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Auto Niche Miner Pro</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
   <header class="top">
-    <div class="brand"><span class="dot"></span> Auto Niche Miner Pro</div>
+    <h1>Auto Niche Miner Pro</h1>
     <nav>
-      <button data-tab="empire">Empire</button>
-      <button data-tab="niches">Niches</button>
-      <button data-tab="affiliate" title="Coming soon">Affiliate Hub</button>
+      <button>Empire</button>
+      <button>Niches</button>
+      <button>Affiliate Hub</button>
     </nav>
   </header>
 
   <main>
-    <section id="empire" class="tab">
-      <div class="card">
-        <div class="card-head"><h2>🏆 Empire Leaderboard</h2></div>
-        <div class="card-body">
-          <table id="empireTable">
-            <thead><tr><th>Site</th><th>Revenue</th><th>Status</th></tr></thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-head"><h3>📈 30‑Day Traffic</h3></div>
-        <div class="card-body"><canvas id="trafficChart" height="120"></canvas></div>
-      </div>
+    <!-- Leaderboard -->
+    <section class="panel">
+      <h2>🏆 Empire Leaderboard</h2>
+      <button id="refreshBtn">🔄 Refresh</button>
+      <table>
+        <thead>
+          <tr>
+            <th>Site</th>
+            <th>Revenue</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard-body"></tbody>
+      </table>
     </section>
 
-    <section id="niches" class="tab hidden">
-      <div class="card">
-        <div class="card-head"><h2>🌐 Niches & Keywords</h2><div class="chips" id="nicheFilters"></div></div>
-        <div class="card-body">
-          <table id="keywordTable">
-            <thead><tr><th>Keyword</th><th>Niche</th><th>Volume</th><th>Competition</th></tr></thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-head"><h3>🏹 Top 5 Keyword Opportunities</h3></div>
-        <div class="card-body"><canvas id="kwChart" height="120"></canvas></div>
-      </div>
-    </section>
-
-    <section id="affiliate" class="tab hidden">
-      <div class="card">
-        <div class="card-head"><h2>🤝 Affiliate Hub</h2></div>
-        <div class="card-body"><p class="muted">🚧 Coming soon — automatic affiliate discovery, signup links, and link storage.</p></div>
-      </div>
+    <!-- Traffic Chart placeholder -->
+    <section class="panel">
+      <h2>📊 30-Day Traffic</h2>
+      <div id="trafficChart">Loading traffic...</div>
     </section>
   </main>
 
-  <button id="aiCoachBtn" class="coach-btn" title="AI Coach">💡</button>
-  <aside id="aiCoach" class="coach hidden">
-    <div class="coach-head"><div class="coach-title">AI Coach</div><button id="coachClose" class="ghost">✕</button></div>
-    <div id="coachBody" class="coach-body"><div class="muted">Click 💡 to refresh live insights.</div></div>
-  </aside>
-
-  <script>
-    (async () => {
-      try {
-        const r = await fetch('/api/env');
-        if (r.ok) {
-          const env = await r.json();
-          window.SUPABASE_URL = env.SUPABASE_URL || '';
-          window.SUPABASE_ANON_KEY = env.SUPABASE_ANON_KEY || '';
-          console.log('ENV ready:', { hasURL: !!window.SUPABASE_URL, hasKey: !!window.SUPABASE_ANON_KEY });
-        } else { console.warn('ENV endpoint not available, continuing in mock mode.'); }
-      } catch (e) { console.warn('ENV fetch failed, continuing in mock mode.', e); }
-
-      const show = (id) => { document.querySelectorAll('.tab').forEach(el => el.classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); window.ACTIVE_TAB = id; };
-      document.querySelectorAll('nav button').forEach(b => b.onclick = () => show(b.dataset.tab));
-      show('empire');
-
-      await import('/src/lib/supabase.js');
-      await import('/empire.js');
-      await import('/niches.js');
-      const coach = await import('/ai-coach.js');
-      document.getElementById('aiCoachBtn').onclick = () => coach.toggleCoach(true);
-      document.getElementById('coachClose').onclick = () => coach.toggleCoach(false);
-    })();
-  </script>
+  <script type="module" src="index.js"></script>
 </body>
 </html>
