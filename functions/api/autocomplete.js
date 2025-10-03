@@ -1,1 +1,0 @@
-export async function onRequestGet() { return new Response(JSON.stringify({src:'google',suggestions:['demo keyword']}),{headers:{'content-type':'application/json'}}); }
