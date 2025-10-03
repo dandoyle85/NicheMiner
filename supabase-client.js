@@ -1,33 +1,15 @@
-// supabase-client.js — Phase 8.1.1 Full Bundle
-import { createClient } from "https://esm.sh/@supabase/supabase-js";
-
-// 🔧 Replace these placeholders with your actual Supabase project URL and anon key
-const SUPABASE_URL = "https://YOURPROJECT.supabase.co";
-const SUPABASE_ANON_KEY = "YOUR-ANON-KEY";
-
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// supabase-client.js — Phase 8.2.1
+import { supabase, mockMode } from './src/lib/supabase.js';
 
 export async function saveKeywords(list){
   if (!list || !list.length) return;
+  if(mockMode){
+    console.log("⚠️ Mock mode — keywords not saved to Supabase.");
+    return;
+  }
   try {
     const { data, error } = await supabase.from("keywords").insert(list);
     if (error) throw error;
     console.log("Saved to Supabase", data);
   } catch (e){ console.error("Supabase error", e); }
 }
-
-export async function getSites(){
-  try{
-    const { data, error } = await supabase.from("sites").select("*");
-    if (error) throw error;
-    const tbody=document.querySelector("#empireTable tbody");
-    tbody.innerHTML="";
-    data.forEach(s=>{
-      const tr=document.createElement("tr");
-      tr.innerHTML=`<td>${s.name}</td><td>${s.revenue||0}</td><td>${s.status||"OK"}</td>`;
-      tbody.appendChild(tr);
-    });
-  }catch(e){ console.error("Supabase sites error", e); }
-}
-
-window.addEventListener("DOMContentLoaded",getSites);

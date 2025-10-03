@@ -1,5 +1,6 @@
-// fetch-keywords.js — Phase 8.1.1 Full Bundle
+// fetch-keywords.js — Phase 8.2.1
 import { saveKeywords } from './supabase-client.js';
+import { mockMode, mockKeywords } from './src/lib/supabase.js';
 
 const API_BASE = "/api";
 
@@ -12,6 +13,10 @@ async function jget(path, params) {
 }
 
 async function getSources(niche) {
+  if(mockMode){
+    console.log("⚠️ Keywords using MOCK keywords");
+    return mockKeywords;
+  }
   console.groupCollapsed(`🔎 Fetching for niche: ${niche}`);
   const results = await Promise.allSettled([
     jget("/autocomplete", { src:"google", q:niche }),
@@ -27,13 +32,12 @@ async function getSources(niche) {
   const merged = [];
   results.forEach((r,i) => {
     if (r.status === "fulfilled") {
-      const key = i < 7 ? "suggestions" : "suggestions";
+      const key = "suggestions";
       (r.value[key]||[]).forEach(s => merged.push({ keyword:s, source:r.value.src||"src" }));
     } else {
       console.warn("Source failed", r.reason);
     }
   });
-  console.debug("Merged raw", merged);
 
   const seen = new Set();
   const deduped = merged.filter(k => {
@@ -49,7 +53,6 @@ async function getSources(niche) {
     competition: i%3===0?"Low":i%3===1?"Medium":"High"
   }));
 
-  console.debug("Enriched", enriched);
   console.groupEnd();
   return enriched.slice(0,50);
 }

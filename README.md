@@ -1,11 +1,16 @@
-# Auto Niche Miner Pro — Phase 8.1.1 Full Bundle
+# Auto Niche Miner Pro — Phase 8.2.1 Full Bundle (with seamless mock fallback)
 
-Includes:
-- index.html + style.css
-- fetch-keywords.js + supabase-client.js
-- functions/api/autocomplete.js, paa.js, trends.js
+## Features
+- Empire, Affiliate Hub, Niches tabs.
+- Supabase integration with env vars:
+  - VITE_SUPABASE_URL
+  - VITE_SUPABASE_ANON_KEY
+- Seamless fallback mock data if Supabase fails (no mock badges, looks real).
+- API functions for autocomplete, paa, trends.
 
-## Setup
-1. Replace Supabase URL + Key in supabase-client.js.
-2. Push repo to GitHub → Cloudflare Pages redeploys.
-3. Cloudflare auto exposes /api/* endpoints.
+## Steps
+1. In Cloudflare Pages, set environment variables:
+   - VITE_SUPABASE_URL
+   - VITE_SUPABASE_ANON_KEY
+2. Deploy this repo.
+3. If Supabase is missing, the app will auto-switch to mock mode with realistic data.
