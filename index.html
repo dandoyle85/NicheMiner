@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NicheMiner — Phase 9</title>
+  <link rel="stylesheet" href="style.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="top">
+    <div class="brand"><span class="dot"></span> NicheMiner</div>
+    <nav class="tabs">
+      <button data-tab="empire" class="active">Empire</button>
+      <button data-tab="niches">Niches</button>
+      <button data-tab="affiliate" title="Coming soon">Affiliate Hub</button>
+    </nav>
+    <div class="actions">
+      <button id="addSiteBtn" class="cta">+ Add Site</button>
+      <button id="aiToggle" class="ghost" title="AI Coach">💡 Coach</button>
+      <button id="refreshBtn" class="ghost">↻ Refresh</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="empire" class="tab">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>🏆 Empire Leaderboard</h2>
+          <div class="inline">
+            <label for="rangeSel">Range</label>
+            <select id="rangeSel">
+              <option value="7">7 days</option>
+              <option value="30" selected>30 days</option>
+              <option value="90">90 days</option>
+            </select>
+          </div>
+        </div>
+        <table class="table">
+          <thead><tr><th>Site</th><th>Revenue</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="siteTbody"></tbody>
+        </table>
+        <div id="siteEmpty" class="empty hidden">No sites yet. Click <b>+ Add Site</b> to seed your first one.</div>
+      </div>
+
+      <div class="panel">
+        <h2>📈 Traffic (per site)</h2>
+        <div id="charts" class="charts-grid"></div>
+      </div>
+    </section>
+
+    <section id="niches" class="tab hidden">
+      <div class="panel">
+        <div class="panel-head"><h2>🌐 Niches</h2></div>
+        <div id="nicheEmpty" class="empty hidden">No niches found yet — run discovery in the next phase to populate <code>keyword_metrics</code>.</div>
+        <div id="nicheList" class="chips"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h2 id="kwTitle">🔎 Keywords</h2></div>
+        <table class="table">
+          <thead><tr><th>Keyword</th><th>Volume</th><th>Competition</th></tr></thead>
+          <tbody id="kwTbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="affiliate" class="tab hidden">
+      <div class="panel">
+        <h2>🤝 Affiliate Hub</h2>
+        <p class="muted">🚧 Coming soon — signup links, link storage, performance tracking.</p>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="siteModal" class="modal">
+    <form method="dialog" id="siteForm" class="modal-body">
+      <h3 id="siteModalTitle">Add Site</h3>
+      <input type="hidden" id="siteId"/>
+      <label>Name <input id="siteName" required placeholder="My Niche Site"/></label>
+      <label>Revenue ($) <input id="siteRevenue" type="number" min="0" value="0"/></label>
+      <label>Status
+        <select id="siteStatus">
+          <option>Active</option>
+          <option>Scaling</option>
+          <option>Cooling</option>
+        </select>
+      </label>
+      <div class="modal-actions">
+        <button value="cancel" class="ghost">Cancel</button>
+        <button id="siteSave" class="cta" value="default">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="confirmModal" class="modal">
+    <div class="modal-body">
+      <h3>Confirm delete</h3>
+      <p>Are you sure you want to delete <b id="delName"></b>?</p>
+      <div class="modal-actions">
+        <button class="ghost" id="delCancel">Cancel</button>
+        <button class="danger" id="delOk">Delete</button>
+      </div>
+    </div>
+  </dialog>
+
+  <aside id="coach" class="coach hidden">
+    <div class="coach-head">
+      <div>AI Coach</div>
+      <button id="coachClose" class="ghost">✕</button>
+    </div>
+    <div class="coach-body" id="coachBody"><div class="point info">Overview loading…</div></div>
+    <div class="coach-foot">
+      <label class="block">Manual AI Prompt (copy to ChatGPT):</label>
+      <textarea id="coachPrompt" rows="3" placeholder="e.g., Give me 10 blog ideas for Drone Empire based on its recent traffic and low-competition keywords."></textarea>
+      <button id="copyPrompt" class="cta small">Copy Prompt</button>
+    </div>
+  </aside>
+
+  <script src="env.js"></script>
+  <script type="module" src="supabase.js"></script>
+  <script type="module" src="index.js"></script>
+</body>
+</html>
