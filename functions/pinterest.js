@@ -1,1 +1,0 @@
-// Pinterest scraper logic
