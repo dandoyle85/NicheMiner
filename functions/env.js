@@ -1,0 +1,1 @@
+export const onRequest = async ({ env }) => {return new Response(JSON.stringify({SUPABASE_URL: env.VITE_SUPABASE_URL || env.SUPABASE_URL || '',SUPABASE_KEY: env.VITE_SUPABASE_ANON_KEY || env.SUPABASE_KEY || '',SERP_API_KEY: env.SERP_API_KEY || ''}), { headers: { 'content-type':'application/json; charset=utf-8' } });};
