@@ -1,1 +1,0 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.1/+esm';export function createSupabase(url,key){if(!url||!key)throw new Error('Missing Supabase URL or Key');return createClient(url,key);}

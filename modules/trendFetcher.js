@@ -1,1 +1,0 @@
-export async function fetchTrends(){const r=await fetch('/api/trends');if(r.ok)return r.json();return []; }
