@@ -37,10 +37,12 @@
           <tbody id="kwTbody"></tbody>
         </table>
       </div>
+      <div class="table-foot">
+        <button id="loadMoreBtn" class="btn">Load more keywords</button>
+      </div>
     </section>
   </main>
 
-  <!-- Drawer -->
   <div id="drawerOverlay" class="drawer-overlay"></div>
   <aside id="drawer" class="drawer">
     <header class="drawer-head">
@@ -55,12 +57,18 @@
       <button class="btn btn-primary" id="genBlogBtn">Generate Blog</button>
       <button class="btn" id="genShortsBtn">Generate Shorts</button>
       <button class="btn" id="genPinsBtn">Generate Pins</button>
+      <button class="btn" id="genEbookBtn">Generate eBook</button>
       <button class="btn btn-ghost" id="addAffBtn">Add Affiliate</button>
     </div>
     <div class="drawer-output">
       <div class="output-head">
         <span id="outputTitle">Output</span>
-        <button id="copyOutBtn" class="icon-btn" title="Copy">📋</button>
+        <div class="out-actions">
+          <button id="exportMdBtn" class="btn">Export .md</button>
+          <button id="saveToTrackerBtn" class="btn btn-primary">💾 Save to Tracker</button>
+          <button id="saveToWordPressBtn" class="btn btn-primary">🌐 Save to WordPress</button>
+          <button id="copyOutBtn" class="icon-btn" title="Copy">📋</button>
+        </div>
       </div>
       <textarea id="outputBox" class="output-box" spellcheck="false"></textarea>
     </div>
