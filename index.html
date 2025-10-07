@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NicheMiner</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main id="app" class="app">
+    <header class="topbar">
+      <h1>🔥 NicheMiner</h1>
+      <div class="actions">
+        <button id="refreshBtn" class="btn btn-primary">⟳ Refresh</button>
+        <button id="clearBtn" class="btn btn-ghost" title="Clear cached data">🗑 Clear</button>
+      </div>
+    </header>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>Top Niches (click to drill keywords)</h2>
+        <div class="inline-add">
+          <input id="nicheInput" placeholder="Add a niche (e.g., drone mapping)" />
+          <button id="addNicheBtn" class="btn btn-primary">Add</button>
+        </div>
+      </div>
+      <ul id="nicheList" class="niche-list"></ul>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>Keywords</h2></div>
+      <div class="table-scroll">
+        <table class="table" id="kwTable">
+          <thead>
+            <tr><th>Keyword</th><th>Score</th><th>Intent</th><th>Trend</th><th></th></tr>
+          </thead>
+          <tbody id="kwTbody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Drawer -->
+  <div id="drawerOverlay" class="drawer-overlay"></div>
+  <aside id="drawer" class="drawer">
+    <header class="drawer-head">
+      <div>
+        <div class="drawer-chip" id="drawerNiche">Niche</div>
+        <h3 id="drawerKeyword">keyword</h3>
+        <p id="drawerMeta" class="meta">Score • Intent • Trend</p>
+      </div>
+      <button id="drawerClose" class="icon-btn" aria-label="Close">✕</button>
+    </header>
+    <div class="drawer-actions">
+      <button class="btn btn-primary" id="genBlogBtn">Generate Blog</button>
+      <button class="btn" id="genShortsBtn">Generate Shorts</button>
+      <button class="btn" id="genPinsBtn">Generate Pins</button>
+      <button class="btn btn-ghost" id="addAffBtn">Add Affiliate</button>
+    </div>
+    <div class="drawer-output">
+      <div class="output-head">
+        <span id="outputTitle">Output</span>
+        <button id="copyOutBtn" class="icon-btn" title="Copy">📋</button>
+      </div>
+      <textarea id="outputBox" class="output-box" spellcheck="false"></textarea>
+    </div>
+  </aside>
+
+  <script src="config.js"></script>
+  <script type="module" src="supabase-client.js"></script>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
