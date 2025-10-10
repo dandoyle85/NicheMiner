@@ -1,0 +1,4 @@
+name = "nicheminer-suggest-proxy"
+main = "worker.js"
+compatibility_date = "2025-10-01"
+type = "javascript"
