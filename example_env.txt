@@ -1,0 +1,6 @@
+# example_env.txt
+# Add these as Cloudflare Pages environment variables (single-line JSON strings)
+
+SITE_KEYWORDS=["drone mapping","drone jobs","drone inspection","drone services near me","aerial mapping"]
+LOCATIONS=["Lansing","Grand Rapids","Michigan","USA"]
+BRANDS=["DJI","Autel","Skydio","Parrot"]
