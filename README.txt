@@ -1,0 +1,1 @@
+Deploy to Cloudflare/GitHub Pages. Enter Supabase URL+Anon key in Settings (☰). Run supabase_used_keywords.sql in Supabase. Keywords are collapsible list (clean mode).
